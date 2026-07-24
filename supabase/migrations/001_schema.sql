@@ -1,0 +1,158 @@
+-- =====================================================================
+--  NexaMind AI — 001_schema.sql
+-- =====================================================================
+
+-- --- Extensions ---
+create extension if not exists "pgcrypto";
+create extension if not exists "vector";
+
+-- --- Types ENUM ---
+create type user_role as enum ('user', 'admin');
+create type theme_pref as enum ('light', 'dark', 'system');
+create type source_type as enum ('document','note','faq','procedure','compte_rendu','fiche_projet','autre');
+create type file_type as enum ('pdf','docx','txt','md','autre');
+create type index_status as enum ('pending','processing','ready','error');
+create type message_role as enum ('user','assistant');
+create type feedback_rating as enum ('positive','negative');
+
+-- --- Tables ---
+create table profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  full_name text,
+  role user_role not null default 'user',
+  theme_preference theme_pref not null default 'system',
+  is_active boolean not null default true,
+  last_login_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table resource (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references profiles(id) on delete cascade,
+  title text not null,
+  description text,
+  source_type source_type not null,
+  file_url text,
+  file_type file_type,
+  file_size bigint check (file_size is null or file_size <= 20971520),
+  raw_content text,
+  index_status index_status not null default 'pending',
+  is_active boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table chunk (
+  id uuid primary key default gen_random_uuid(),
+  resource_id uuid not null references resource(id) on delete cascade,
+  content text not null,
+  embedding vector(384) not null,
+  chunk_index int not null,
+  token_count int,
+  created_at timestamptz not null default now(),
+  unique (resource_id, chunk_index)
+);
+
+create table category (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  color text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table resource_category (
+  resource_id uuid not null references resource(id) on delete cascade,
+  category_id uuid not null references category(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (resource_id, category_id)
+);
+
+create table conversation (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references profiles(id) on delete cascade,
+  title text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table message (
+  id uuid primary key default gen_random_uuid(),
+  conversation_id uuid not null references conversation(id) on delete cascade,
+  role message_role not null,
+  content text not null,
+  token_count int,
+  has_context boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create table citation (
+  id uuid primary key default gen_random_uuid(),
+  message_id uuid not null references message(id) on delete cascade,
+  chunk_id uuid not null references chunk(id) on delete cascade,
+  resource_id uuid not null references resource(id) on delete cascade,
+  relevance_score real,
+  created_at timestamptz not null default now()
+);
+
+create table search_query (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references profiles(id) on delete cascade,
+  query_text text not null,
+  results_count int,
+  created_at timestamptz not null default now()
+);
+
+create table feedback (
+  id uuid primary key default gen_random_uuid(),
+  message_id uuid not null references message(id) on delete cascade,
+  user_id uuid not null references profiles(id) on delete cascade,
+  rating feedback_rating not null,
+  comment text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (message_id, user_id)
+);
+
+-- --- Index de Performance ---
+create index idx_resource_user on resource(user_id);
+create index idx_resource_queryable on resource(user_id) where index_status = 'ready' and is_active = true;
+create index idx_chunk_resource on chunk(resource_id);
+create index idx_chunk_embedding on chunk using hnsw (embedding vector_cosine_ops);
+create index idx_conversation_user on conversation(user_id);
+create index idx_message_conversation on message(conversation_id);
+create index idx_citation_message on citation(message_id);
+create index idx_search_query_user on search_query(user_id);
+create index idx_resource_category_cat on resource_category(category_id);
+
+-- --- Trigger updated_at ---
+create or replace function update_updated_at() returns trigger as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$ language plpgsql;
+
+create trigger set_updated_at before update on profiles for each row execute function update_updated_at();
+create trigger set_updated_at before update on resource for each row execute function update_updated_at();
+create trigger set_updated_at before update on category for each row execute function update_updated_at();
+create trigger set_updated_at before update on conversation for each row execute function update_updated_at();
+create trigger set_updated_at before update on feedback for each row execute function update_updated_at();
+
+-- --- Trigger handle_new_user ---
+create or replace function handle_new_user() returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  insert into profiles (id, email, full_name, role)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data ->> 'full_name', 'Nouvel utilisateur'),
+    'user'
+  );
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created after insert on auth.users for each row execute function handle_new_user();
