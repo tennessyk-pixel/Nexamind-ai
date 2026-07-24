@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadbook Supabase · NexaMind AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C0A18; --bg2:#0F0C1F;
+    --surface:#17122E; --surface2:#1D1738; --line:#2A2350;
+    --primary:#3ECF8E; --primary2:#22C55E; --glow:#86EFAC;
+    --text:#EAE7FB; --muted:#9C96C0; --faint:#6E688F;
+    --done:#34D399; --done-dim:#1E5B48;
+    --c-indigo:#8B5CF6; --c-violet:#C084FC; --c-cyan:#22D3EE; --c-emerald:#3ECF8E;
+    --c-amber:#FBBF24; --c-slate:#94A3B8; --c-silver:#CBD5E1; --c-rose:#FB7185;
+    --c-orange:#FB923C; --c-pink:#F472B6; --c-teal:#2DD4BF;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:radial-gradient(1200px 700px at 15% -10%, #1A1440 0%, transparent 55%),
+               radial-gradient(1000px 600px at 100% 0%, #241a4d 0%, transparent 50%),
+               var(--bg);
+    color:var(--text); font-family:"Inter",system-ui,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px 100px}
+  header{position:sticky; top:0; z-index:20; padding-top:22px;
+    background:linear-gradient(180deg, var(--bg) 55%, rgba(12,10,24,.85) 85%, transparent);
+    backdrop-filter:blur(6px);}
+  .eyebrow{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--glow); opacity:.85}
+  h1{font-family:"Space Grotesk",sans-serif; font-weight:700; font-size:clamp(28px,6vw,44px);
+    margin:6px 0 2px; letter-spacing:-.02em; line-height:1.02}
+  h1 span{background:linear-gradient(90deg,var(--glow),var(--c-cyan)); -webkit-background-clip:text;
+    background-clip:text; -webkit-text-fill-color:transparent}
+  .tagline{color:var(--muted); font-size:14px; margin-bottom:16px}
+  .bar-shell{display:flex; align-items:center; gap:14px; padding:14px 16px; margin-bottom:8px;
+    background:linear-gradient(180deg,var(--surface2),var(--surface)); border:1px solid var(--line);
+    border-radius:14px; box-shadow:0 8px 30px -18px #000}
+  .pct{font-family:"Space Grotesk",sans-serif; font-weight:700; font-size:26px; min-width:70px;
+    background:linear-gradient(90deg,var(--glow),var(--c-cyan)); -webkit-background-clip:text;
+    background-clip:text; -webkit-text-fill-color:transparent; font-variant-numeric:tabular-nums}
+  .bar-mid{flex:1}
+  .track{height:9px; border-radius:99px; background:#241d44; overflow:hidden}
+  .fill{height:100%; width:0; border-radius:99px;
+    background:linear-gradient(90deg,var(--primary),var(--primary2) 55%,var(--c-cyan));
+    box-shadow:0 0 16px -2px var(--primary2); transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .counts{font-size:12.5px; color:var(--muted); margin-top:7px; font-variant-numeric:tabular-nums}
+  .reset{border:1px solid var(--line); background:var(--surface); color:var(--muted);
+    font-size:12px; font-family:"JetBrains Mono",monospace; padding:8px 12px; border-radius:10px;
+    cursor:pointer; transition:.15s; white-space:nowrap}
+  .reset:hover{color:var(--text); border-color:var(--primary2)}
+  .legend{display:flex; flex-wrap:wrap; gap:7px; margin:2px 0 12px}
+  .legend .tag{cursor:default}
+  .principle{font-size:12.5px; color:var(--muted); border:1px solid color-mix(in srgb,var(--c-orange) 30%,transparent);
+    border-left:3px solid var(--c-orange); background:linear-gradient(180deg,rgba(251,146,60,.08),transparent);
+    padding:10px 13px; border-radius:10px; margin:0 0 24px}
+  .principle b{color:var(--c-orange)}
+  .phase{position:relative; padding-left:46px; margin-bottom:14px}
+  .rail{position:absolute; left:15px; top:6px; bottom:-14px; width:2px; background:var(--line)}
+  .phase:last-child .rail{display:none}
+  .node{position:absolute; left:7px; top:4px; width:18px; height:18px; border-radius:50%;
+    background:var(--bg2); border:2px solid var(--line); z-index:2; transition:.35s;
+    display:grid; place-items:center}
+  .node::after{content:""; width:6px; height:6px; border-radius:50%; background:var(--faint); transition:.35s}
+  .phase.complete .node{border-color:var(--done); background:#0c2b22; box-shadow:0 0 0 4px rgba(52,211,153,.12), 0 0 18px -2px var(--done)}
+  .phase.complete .node::after{background:var(--done)}
+  .phase.complete .rail{background:linear-gradient(var(--done),var(--line))}
+  .card{background:linear-gradient(180deg,var(--surface2),var(--surface));
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+    box-shadow:0 10px 34px -22px #000}
+  .card-head{display:flex; align-items:flex-start; gap:12px; padding:16px 18px; cursor:pointer; user-select:none}
+  .idx{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--glow);
+    border:1px solid var(--line); border-radius:8px; padding:4px 8px; margin-top:2px; white-space:nowrap}
+  .card-head h2{font-family:"Space Grotesk",sans-serif; font-size:17.5px; font-weight:600;
+    margin:0 0 2px; letter-spacing:-.01em}
+  .seq{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--faint)}
+  .head-right{margin-left:auto; display:flex; align-items:center; gap:12px; padding-top:2px}
+  .mini{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+  .chev{color:var(--faint); transition:transform .25s; font-size:13px}
+  .phase.open .chev{transform:rotate(90deg)}
+  .steps{max-height:0; overflow:hidden; transition:max-height .35s ease}
+  ul{list-style:none; margin:0; padding:2px 10px 12px}
+  li{display:flex; gap:12px; padding:11px 8px; border-top:1px solid rgba(42,35,80,.5);
+    cursor:pointer; transition:background .15s; border-radius:10px}
+  li:hover{background:rgba(139,92,246,.06)}
+  .box{flex:none; width:20px; height:20px; margin-top:1px; border-radius:6px;
+    border:2px solid #4A4180; background:transparent; display:grid; place-items:center; transition:.18s}
+  .box svg{width:12px; height:12px; stroke:var(--bg); stroke-width:3.5; fill:none;
+    stroke-dasharray:20; stroke-dashoffset:20; transition:stroke-dashoffset .22s .05s}
+  li.done .box{background:var(--done); border-color:var(--done)}
+  li.done .box svg{stroke-dashoffset:0}
+  .txt{flex:1; min-width:0}
+  .txt .t{font-size:14.5px; transition:.2s}
+  li.done .t{color:var(--faint); text-decoration:line-through}
+  .note{font-size:12.5px; color:var(--muted); margin-top:3px}
+  .cmd{display:inline-flex; align-items:center; gap:8px; margin-top:6px; font-family:"JetBrains Mono",monospace;
+    font-size:12px; color:var(--c-cyan); background:#0c1626; border:1px solid #163247;
+    padding:5px 9px; border-radius:8px; cursor:pointer; transition:.15s}
+  .cmd:hover{border-color:var(--c-cyan)}
+  .cmd .cp{color:var(--faint); font-size:10px}
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:7px}
+  .tag{font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.04em;
+    padding:3px 8px; border-radius:99px; border:1px solid; background:transparent; line-height:1.4}
+  .t-emerald{color:var(--c-emerald); border-color:color-mix(in srgb,var(--c-emerald) 45%,transparent)}
+  .t-amber{color:var(--c-amber); border-color:color-mix(in srgb,var(--c-amber) 45%,transparent)}
+  .t-orange{color:var(--c-orange); border-color:color-mix(in srgb,var(--c-orange) 50%,transparent); background:rgba(251,146,60,.07)}
+  .t-pink{color:var(--c-pink); border-color:color-mix(in srgb,var(--c-pink) 50%,transparent)}
+  .t-cyan{color:var(--c-cyan); border-color:color-mix(in srgb,var(--c-cyan) 45%,transparent)}
+  .celebrate{margin-top:22px; padding:18px 20px; text-align:center; border-radius:var(--radius);
+    border:1px solid var(--done-dim); background:linear-gradient(180deg,rgba(52,211,153,.08),transparent);
+    font-family:"Space Grotesk",sans-serif; color:var(--done); display:none}
+  .celebrate.show{display:block}
+  footer{margin-top:34px; color:var(--faint); font-size:12px; text-align:center; line-height:1.7}
+  @media (max-width:560px){ .head-right .mini{display:none} .idx{display:none}
+    .bar-shell{flex-wrap:wrap} .reset{order:3} }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Roadbook Supabase</div>
+    <h1>NexaMind <span>Backend</span></h1>
+    <div class="tagline">Le backend Supabase, étape par étape — de la création du projet au seed vérifié.</div>
+    <div class="bar-shell">
+      <div class="pct" id="pct">0%</div>
+      <div class="bar-mid">
+        <div class="track"><div class="fill" id="fill"></div></div>
+        <div class="counts" id="counts"></div>
+      </div>
+      <button class="reset" id="reset">Réinitialiser</button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="principle">🔍 Après chaque script SQL, lance le <b>prompt de vérification Claude Code</b> (fourni avec ce roadbook) avant de cocher.</div>
+  </header>
+  <main id="timeline"></main>
+  <div class="celebrate" id="celebrate">🚀 Backend Supabase opérationnel — prêt pour Antigravity !</div>
+  <footer>Roadbook Supabase · NexaMind AI · progression sauvegardée automatiquement.</footer>
+</div>
+
+<script>
+const CHECK = '<svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>';
+
+const LEGEND = [
+  ["Supabase UI","t-emerald"], ["SQL Editor","t-cyan"], ["Claude Code","t-orange"],
+  ["Toi","t-amber"], ["Jalon","t-pink"]
+];
+
+const T = {
+  supa:["Supabase UI","t-emerald"], sql:["SQL Editor","t-cyan"],
+  code:["Claude Code","t-orange"], toi:["Toi","t-amber"], jalon:["Jalon","t-pink"]
+};
+
+const PROJECT = {
+  eyebrow: "Roadbook Supabase",
+  title: "NexaMind Backend",
+  tagline: "Le backend Supabase, étape par étape.",
+  storeKey: "roadbook_nexamind_supabase_v1",
+  celebrate: "🚀 Backend Supabase opérationnel — prêt pour Antigravity !"
+};
+
+const PHASES = [
+  {
+    id:"p0", idx:"01", seq:"Préparation", title:"Créer le projet Supabase",
+    steps:[
+      {id:"s01", t:"Créer un compte Supabase (si pas encore fait)", tags:["toi","supa"], note:"https://supabase.com → Start your project."},
+      {id:"s02", t:"Créer un nouveau projet « NexaMind »", tags:["supa"], note:"Région : eu-west (France). Mot de passe base de données : noter et garder en sécurité."},
+      {id:"s03", t:"Attendre que le projet soit provisionné (~2 min)", tags:["supa"]},
+      {id:"s04", t:"Activer l'extension pgvector", tags:["sql"], note:"Dans SQL Editor, exécuter : CREATE EXTENSION IF NOT EXISTS vector;", cmd:"CREATE EXTENSION IF NOT EXISTS vector;"},
+      {id:"s05", t:"Vérifier que pgvector est actif", tags:["sql"], note:"Exécuter : SELECT * FROM pg_extension WHERE extname = 'vector';", cmd:"SELECT * FROM pg_extension WHERE extname = 'vector';"},
+      {id:"s06", t:"Noter l'URL du projet et la clé anon (Settings → API)", tags:["toi","supa"], note:"Tu en auras besoin pour connecter Next.js plus tard."}
+    ]
+  },
+  {
+    id:"p1", idx:"02", seq:"Script 1/4", title:"Exécuter schema.sql (tables + index + triggers)",
+    steps:[
+      {id:"s11", t:"Ouvrir le SQL Editor dans Supabase", tags:["supa"]},
+      {id:"s12", t:"Coller le contenu complet de schema.sql", tags:["sql"]},
+      {id:"s13", t:"Cliquer RUN — vérifier « Success. No rows returned »", tags:["sql"], note:"Si erreur : lire le message, corriger, relancer."},
+      {id:"s14", t:"Vérifier visuellement : aller dans Table Editor → 10 tables doivent apparaître", tags:["supa"], note:"profiles, resource, chunk, category, resource_category, conversation, message, citation, search_query, feedback."},
+      {id:"s15", t:"Lancer le prompt de vérification Claude Code (schema)", tags:["code"], note:"Colle le prompt fourni ci-dessous dans Claude Code."},
+      {id:"s16", t:"Schéma validé ✓", tags:["jalon"]}
+    ]
+  },
+  {
+    id:"p2", idx:"03", seq:"Script 2/4", title:"Exécuter rls-policies.sql (sécurité)",
+    steps:[
+      {id:"s21", t:"Coller le contenu complet de rls-policies.sql dans le SQL Editor", tags:["sql"]},
+      {id:"s22", t:"Cliquer RUN — vérifier « Success »", tags:["sql"]},
+      {id:"s23", t:"Vérifier visuellement : Table Editor → cliquer une table → onglet « RLS Policies »", tags:["supa"], note:"Chaque table doit avoir au moins 1 policy. L'icône RLS doit être verte (activée)."},
+      {id:"s24", t:"Lancer le prompt de vérification Claude Code (RLS)", tags:["code"]},
+      {id:"s25", t:"RLS validée ✓", tags:["jalon"]}
+    ]
+  },
+  {
+    id:"p3", idx:"04", seq:"Script 3/4", title:"Exécuter rpc-functions.sql (fonctions RAG)",
+    steps:[
+      {id:"s31", t:"Coller le contenu complet de rpc-functions.sql dans le SQL Editor", tags:["sql"]},
+      {id:"s32", t:"Cliquer RUN — vérifier « Success »", tags:["sql"]},
+      {id:"s33", t:"Vérifier : Database → Functions → 3 fonctions doivent apparaître", tags:["supa"], note:"match_chunks, get_related_resources, get_resource_chunks."},
+      {id:"s34", t:"Lancer le prompt de vérification Claude Code (RPC)", tags:["code"]},
+      {id:"s35", t:"Fonctions RAG validées ✓", tags:["jalon"]}
+    ]
+  },
+  {
+    id:"p4", idx:"05", seq:"Script 4/4", title:"Créer les comptes + exécuter seed.sql (données test)",
+    steps:[
+      {id:"s41", t:"Aller dans Authentication → Users → « Add user »", tags:["supa"]},
+      {id:"s42", t:"Créer le compte Nadia (email: nadia@nexaworks.test, mdp au choix)", tags:["supa"]},
+      {id:"s43", t:"Créer le compte Marc (email: marc@nexaworks.test, mdp au choix)", tags:["supa"]},
+      {id:"s44", t:"Créer le compte Sonia (email: sonia@nexaworks.test, mdp au choix)", tags:["supa"]},
+      {id:"s45", t:"Vérifier que les 3 profils ont été créés automatiquement (trigger RM-010)", tags:["supa"], note:"Table Editor → profiles → 3 lignes doivent apparaître avec role = 'user'."},
+      {id:"s46", t:"Copier les 3 UUID depuis la table profiles", tags:["toi"], note:"Copie les id de Nadia, Marc, Sonia."},
+      {id:"s47", t:"Dans seed.sql, remplacer les UUID placeholder par les vrais", tags:["toi"], note:"Remplacer 11111111-... par l'UUID de Nadia, 22222222-... par Marc, 33333333-... par Sonia."},
+      {id:"s48", t:"Coller le seed.sql modifié dans le SQL Editor et RUN", tags:["sql"]},
+      {id:"s49", t:"Vérifier : Sonia doit avoir role = 'admin' dans profiles", tags:["supa"]},
+      {id:"s4a", t:"Vérifier : Table Editor → resource → 5 ressources, chunk → 4 chunks", tags:["supa"]},
+      {id:"s4b", t:"Vérifier : conversation → 2 conversations, message → 4 messages", tags:["supa"]},
+      {id:"s4c", t:"Lancer le prompt de vérification Claude Code (seed)", tags:["code"]},
+      {id:"s4d", t:"Seed validé ✓", tags:["jalon"]}
+    ]
+  },
+  {
+    id:"p5", idx:"06", seq:"Validation finale", title:"Vérification complète du backend",
+    steps:[
+      {id:"s51", t:"Lancer le prompt de vérification COMPLÈTE Claude Code", tags:["code"], note:"Le prompt final qui vérifie tout d'un coup."},
+      {id:"s52", t:"Tester un appel match_chunks depuis le SQL Editor", tags:["sql"], note:"Exécuter : SELECT * FROM match_chunks((SELECT embedding FROM chunk LIMIT 1), 0.0, 5);", cmd:"SELECT * FROM match_chunks((SELECT embedding FROM chunk LIMIT 1), 0.0, 5);"},
+      {id:"s53", t:"Vérifier que le résultat retourne des chunks avec similarity > 0", tags:["supa"]},
+      {id:"s54", t:"Versionner les 4 fichiers SQL dans le repo GitHub", tags:["toi"], note:"Dossier supabase/migrations/ dans ton repo. Ordre : 001_schema.sql, 002_rls.sql, 003_rpc.sql, 004_seed.sql."},
+      {id:"s55", t:"Backend Supabase opérationnel 🚀", tags:["jalon"], note:"Prêt à connecter depuis Antigravity (Next.js)."}
+    ]
+  }
+];
+
+/* ================================================================
+   ===============  MOTEUR — NE PAS MODIFIER EN DESSOUS  ===========
+   ================================================================ */
+const KEY = PROJECT.storeKey;
+let state = {};
+PHASES.forEach(p=>p.steps.forEach(s=>{ if(s.done) state[s.id]=true; }));
+
+async function load(){
+  try{ if(window.storage && window.storage.get){
+    const r = await window.storage.get(KEY);
+    if(r && r.value) state = Object.assign(state, JSON.parse(r.value));
+  }}catch(e){}
+}
+async function save(){
+  try{ if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(state)); } }catch(e){}
+}
+
+const timeline = document.getElementById("timeline");
+function tagHTML(k){ const [l,c]=T[k]||["?","t-slate"]; return `<span class="tag ${c}">${l}</span>`; }
+
+function build(){
+  document.getElementById("legend").innerHTML =
+    LEGEND.map(([l,c])=>`<span class="tag ${c}">${l}</span>`).join("");
+  timeline.innerHTML = PHASES.map(p=>{
+    const steps = p.steps.map(s=>{
+      const tags = (s.tags||[]).map(tagHTML).join("");
+      const cmd = s.cmd ? `<div class="cmd" data-cmd="${s.cmd}"><span>$ ${s.cmd}</span><span class="cp">copier</span></div>` : "";
+      const note = s.note ? `<div class="note">${s.note}</div>` : "";
+      return `<li data-id="${s.id}"><span class="box">${CHECK}</span>
+        <span class="txt"><span class="t">${s.t}</span>${note}${cmd}<span class="tags">${tags}</span></span></li>`;
+    }).join("");
+    const seq = p.seq ? `<div class="seq">${p.seq}</div>` : "";
+    return `<section class="phase" id="${p.id}"><div class="rail"></div><div class="node"></div>
+      <div class="card"><div class="card-head" data-phase="${p.id}">
+        <span class="idx">${p.idx}</span><div>${seq}<h2>${p.title}</h2></div>
+        <div class="head-right"><span class="mini" data-mini="${p.id}"></span><span class="chev">▶</span></div>
+      </div><div class="steps"><ul>${steps}</ul></div></div></section>`;
+  }).join("");
+  document.querySelectorAll(".phase").forEach(ph=>ph.classList.add("open"));
+  refresh();
+}
+
+function refresh(){
+  let total=0, done=0;
+  PHASES.forEach(p=>{
+    let pt=0, pd=0;
+    p.steps.forEach(s=>{ pt++; total++; if(state[s.id]){pd++; done++;} });
+    const ph=document.getElementById(p.id);
+    ph.querySelector(`[data-mini="${p.id}"]`).textContent=`${pd}/${pt}`;
+    ph.classList.toggle("complete", pd===pt);
+    p.steps.forEach(s=>{ const li=ph.querySelector(`li[data-id="${s.id}"]`); if(li) li.classList.toggle("done", !!state[s.id]); });
+    const box=ph.querySelector(".steps"); if(ph.classList.contains("open")) box.style.maxHeight=box.scrollHeight+40+"px";
+  });
+  const pct = total? Math.round(done/total*100):0;
+  document.getElementById("fill").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("counts").textContent=`${done} / ${total} étapes`+(pct===100?" — terminé 🎉":"");
+  document.getElementById("celebrate").classList.toggle("show", pct===100 && total>0);
+}
+
+timeline.addEventListener("click", e=>{
+  const cmd=e.target.closest(".cmd");
+  if(cmd){ const t=cmd.getAttribute("data-cmd"); navigator.clipboard && navigator.clipboard.writeText(t);
+    const c=cmd.querySelector(".cp"); const o=c.textContent; c.textContent="copié ✓"; setTimeout(()=>c.textContent=o,1200); e.stopPropagation(); return; }
+  const head=e.target.closest(".card-head");
+  if(head){ const ph=document.getElementById(head.getAttribute("data-phase")); ph.classList.toggle("open");
+    const box=ph.querySelector(".steps"); box.style.maxHeight=ph.classList.contains("open")?box.scrollHeight+40+"px":"0px"; return; }
+  const li=e.target.closest("li[data-id]");
+  if(li){ const id=li.getAttribute("data-id"); state[id]=!state[id]; if(!state[id]) delete state[id]; refresh(); save(); }
+});
+document.getElementById("reset").addEventListener("click", ()=>{ if(confirm("Réinitialiser toute la progression ?")){ state={}; refresh(); save(); } });
+window.addEventListener("resize", ()=>refresh());
+(async function(){ await load(); build(); })();
+</script>
+</body>
+</html>
