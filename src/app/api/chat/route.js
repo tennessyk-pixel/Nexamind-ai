@@ -8,6 +8,7 @@ import { pipeline } from '@xenova/transformers'
 const openrouter = createOpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPENROUTER_API_KEY,
+  compatibility: 'compatible',
 })
 
 // Initialisation du modèle d'embeddings (gte-small) en singleton
@@ -127,11 +128,31 @@ Consignes STRICTES :
 
     console.log('Initiating streamText with Vercel AI SDK...')
 
-    // BUG-03 FIX : Supprimer StreamData déprécié, utiliser onFinish simple
     try {
+      const modelMessages = messages.map(msg => {
+        let textContent = ''
+        if (msg.content && typeof msg.content === 'string') {
+          textContent = msg.content
+        } else if (msg.parts) {
+          textContent = msg.parts
+            .filter(p => p.type === 'text')
+            .map(p => p.text)
+            .join('')
+        }
+        return {
+          role: msg.role,
+          content: textContent
+        }
+      })
+
+      // Retirer les messages d'accueil de l'assistant en début d'historique pour OpenRouter
+      while (modelMessages.length > 0 && modelMessages[0].role === 'assistant') {
+        modelMessages.shift()
+      }
+
       const result = streamText({
         model,
-        messages,
+        messages: modelMessages,
         system: systemPrompt,
         async onFinish({ text }) {
           console.log('Stream finished successfully. Text length:', text.length)
