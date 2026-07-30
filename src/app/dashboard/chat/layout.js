@@ -1,20 +1,52 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { MessageSquare, Plus, Search, MoreHorizontal } from 'lucide-react'
+import { createClient } from '@/utils/supabase/client'
 
 export default function ChatLayout({ children }) {
   const pathname = usePathname()
+  const [conversations, setConversations] = useState([])
+  const supabase = createClient()
 
-  // Mock de l'historique des conversations
-  const [conversations] = useState([
-    { id: '1', title: 'Comment facturer un client ?', date: 'Aujourd\'hui' },
-    { id: '2', title: 'Résumé réunion Atlas Q2', date: 'Hier' },
-    { id: '3', title: 'Procédure onboarding', date: 'Il y a 3 jours' },
-    { id: '4', title: 'Politique télétravail', date: 'Semaine dernière' }
-  ])
+  useEffect(() => {
+    const fetchConversations = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data, error } = await supabase
+          .from('conversation')
+          .select('id, title, created_at')
+          .order('created_at', { ascending: false })
+
+        if (!error && data) {
+          setConversations(data)
+        }
+      }
+    }
+    fetchConversations()
+
+    // S'abonner aux changements en temps réel
+    const channel = supabase
+      .channel('realtime-conversations')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'conversation'
+        },
+        () => {
+          fetchConversations()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
 
   return (
     <div className="flex h-[calc(100vh-64px)] md:h-screen w-full bg-white dark:bg-slate-950">

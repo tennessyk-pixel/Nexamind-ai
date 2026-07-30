@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { Search, Filter, SlidersHorizontal, FileText, ExternalLink, Sparkles, MessageSquare, BookOpen } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Search, Filter, SlidersHorizontal, FileText, ExternalLink, Sparkles, MessageSquare, BookOpen, Clock } from 'lucide-react'
+import { createClient } from '@/utils/supabase/client'
 
 export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -10,11 +11,31 @@ export default function SearchPage() {
   const [results, setResults] = useState([])
   const [isSearching, setIsSearching] = useState(false)
   const [error, setError] = useState(null)
+  const [recentSearches, setRecentSearches] = useState([])
+  const supabase = createClient()
 
-  const handleSearch = async (e) => {
+  const fetchRecentSearches = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      const { data } = await supabase
+        .from('search_query')
+        .select('id, query_text')
+        .order('created_at', { ascending: false })
+        .limit(4)
+      setRecentSearches(data || [])
+    }
+  }
+
+  useEffect(() => {
+    fetchRecentSearches()
+  }, [])
+
+  const handleSearch = async (e, overrideQuery = null) => {
     if (e?.preventDefault) e.preventDefault()
     
-    if (searchQuery.trim().length > 0) {
+    const queryToUse = overrideQuery !== null ? overrideQuery : searchQuery
+    
+    if (queryToUse.trim().length > 0) {
       setHasSearched(true)
       setIsSearching(true)
       setError(null)
@@ -22,11 +43,12 @@ export default function SearchPage() {
         const res = await fetch('/api/search', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: searchQuery })
+          body: JSON.stringify({ query: queryToUse })
         })
         const data = await res.json()
         if (data.error) throw new Error(data.error)
         setResults(data.results || [])
+        fetchRecentSearches()
       } catch (err) {
         setError(err.message)
         setResults([])
@@ -102,9 +124,27 @@ export default function SearchPage() {
         {!hasSearched && (
           <div className="flex flex-wrap items-center justify-center gap-3 mt-8 animate-in fade-in duration-700 delay-200">
             <span className="text-sm font-medium text-gray-500">Recherches fréquentes :</span>
-            <button onClick={() => { setSearchQuery('Télétravail'); setTimeout(() => handleSearch({ preventDefault: () => {} }), 0) }} className="px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium hover:border-indigo-300 dark:hover:border-indigo-500 transition-all text-gray-700 dark:text-gray-300">Télétravail</button>
-            <button onClick={() => { setSearchQuery('Congés payés'); setTimeout(() => handleSearch({ preventDefault: () => {} }), 0) }} className="px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium hover:border-indigo-300 dark:hover:border-indigo-500 transition-all text-gray-700 dark:text-gray-300">Congés payés</button>
-            <button onClick={() => { setSearchQuery('Mutuelle'); setTimeout(() => handleSearch({ preventDefault: () => {} }), 0) }} className="px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium hover:border-indigo-300 dark:hover:border-indigo-500 transition-all text-gray-700 dark:text-gray-300">Mutuelle</button>
+            <button onClick={() => { setSearchQuery('Télétravail'); handleSearch(null, 'Télétravail') }} className="px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium hover:border-indigo-300 dark:hover:border-indigo-500 transition-all text-gray-700 dark:text-gray-300">Télétravail</button>
+            <button onClick={() => { setSearchQuery('Congés payés'); handleSearch(null, 'Congés payés') }} className="px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium hover:border-indigo-300 dark:hover:border-indigo-500 transition-all text-gray-700 dark:text-gray-300">Congés payés</button>
+            <button onClick={() => { setSearchQuery('Mutuelle'); handleSearch(null, 'Mutuelle') }} className="px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium hover:border-indigo-300 dark:hover:border-indigo-500 transition-all text-gray-700 dark:text-gray-300">Mutuelle</button>
+          </div>
+        )}
+
+        {/* Recherches récentes (réelles) */}
+        {!hasSearched && recentSearches.length > 0 && (
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-4 animate-in fade-in duration-700 delay-300">
+            <span className="text-sm font-medium text-gray-500 flex items-center gap-1">
+              <Clock size={14} /> Recherches récentes :
+            </span>
+            {recentSearches.map((search) => (
+              <button 
+                key={search.id} 
+                onClick={() => { setSearchQuery(search.query_text); handleSearch(null, search.query_text) }} 
+                className="px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-sm font-medium hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-all text-indigo-700 dark:text-indigo-400"
+              >
+                {search.query_text}
+              </button>
+            ))}
           </div>
         )}
       </div>
