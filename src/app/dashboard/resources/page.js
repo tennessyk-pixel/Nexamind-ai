@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { UploadCloud, FileText, CheckCircle2, Clock, AlertCircle, Search, Plus, Trash2 } from 'lucide-react'
+import { UploadCloud, FileText, CheckCircle2, Clock, AlertCircle, Search, Plus, Trash2, AlignLeft, Sparkles } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 
 export default function ResourcesPage() {
@@ -11,6 +11,15 @@ export default function ResourcesPage() {
   const [uploadError, setUploadError] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('all') // 'all', 'ready', 'pending'
+  
+  // États de traitement de l'IA (s48 / s49)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [processResult, setProcessResult] = useState('')
+  const [processTitle, setProcessTitle] = useState('')
+  const [processActionType, setProcessActionType] = useState('')
+  const [showProcessModal, setShowProcessModal] = useState(false)
+  const [processError, setProcessError] = useState(null)
+
   const supabase = createClient()
 
   // Récupérer la session utilisateur et charger les ressources au montage
@@ -124,6 +133,32 @@ export default function ResourcesPage() {
     } catch (error) {
       console.error('Delete failed:', error)
       alert(`Erreur lors de la suppression : ${error.message}`)
+    }
+  }
+
+  // Traiter un document avec l'IA (résumé ou points clés)
+  const handleProcessResource = async (resource, actionType) => {
+    setIsProcessing(true)
+    setProcessError(null)
+    setProcessResult('')
+    setProcessTitle(resource.title)
+    setProcessActionType(actionType)
+    setShowProcessModal(true)
+
+    try {
+      const res = await fetch('/api/resources/process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resourceId: resource.id, action: actionType })
+      })
+      const data = await res.json()
+      if (data.error) throw new Error(data.error)
+      setProcessResult(data.result || '')
+    } catch (err) {
+      console.error('Process resource failed:', err)
+      setProcessError(err.message)
+    } finally {
+      setIsProcessing(false)
     }
   }
 
@@ -304,13 +339,33 @@ export default function ResourcesPage() {
                       {formatDate(resource.created_at)}
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button 
-                        onClick={() => handleDelete(resource)}
-                        className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 transition-all"
-                        title="Supprimer la ressource"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                      <div className="flex justify-end gap-1">
+                        {resource.index_status === 'ready' && (
+                          <>
+                            <button 
+                              onClick={() => handleProcessResource(resource, 'summarize')}
+                              className="text-gray-400 hover:text-indigo-600 dark:text-gray-500 dark:hover:text-indigo-400 p-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all"
+                              title="Résumé automatique"
+                            >
+                              <AlignLeft size={18} />
+                            </button>
+                            <button 
+                              onClick={() => handleProcessResource(resource, 'extract_points')}
+                              className="text-gray-400 hover:text-purple-600 dark:text-gray-500 dark:hover:text-purple-400 p-2 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all"
+                              title="Extraire les points clés"
+                            >
+                              <Sparkles size={18} />
+                            </button>
+                          </>
+                        )}
+                        <button 
+                          onClick={() => handleDelete(resource)}
+                          className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 transition-all"
+                          title="Supprimer la ressource"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -319,6 +374,82 @@ export default function ResourcesPage() {
           )}
         </div>
       </div>
+
+      {/* Premium Glassmorphism Modal for AI Process Results */}
+      {showProcessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="relative w-full max-w-2xl max-h-[85vh] flex flex-col bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-slate-800/80 rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            
+            {/* Header */}
+            <div className="p-6 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center">
+              <div>
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-1">
+                  {processActionType === 'summarize' ? <AlignLeft size={12} /> : <Sparkles size={12} />}
+                  {processActionType === 'summarize' ? 'Résumé automatique' : 'Points clés extraits'}
+                </span>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate max-w-md">
+                  {processTitle}
+                </h3>
+              </div>
+              <button 
+                onClick={() => setShowProcessModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 px-3 py-1.5 rounded-xl transition-all text-sm font-semibold border border-gray-200 dark:border-slate-700"
+              >
+                Fermer
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6 scrollbar-thin">
+              {isProcessing ? (
+                <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                  <div className="relative w-16 h-16">
+                    <div className="absolute inset-0 rounded-full border-4 border-indigo-200 dark:border-indigo-900/50"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-indigo-600 dark:border-indigo-400 border-t-transparent animate-spin"></div>
+                  </div>
+                  <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 animate-pulse">
+                    Analyse du document et génération par l'IA...
+                  </p>
+                </div>
+              ) : processError ? (
+                <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 rounded-2xl flex gap-3">
+                  <AlertCircle className="shrink-0" />
+                  <div>
+                    <p className="font-bold">Une erreur est survenue</p>
+                    <p className="text-sm mt-1">{processError}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="prose dark:prose-invert prose-indigo max-w-none text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                  {processResult}
+                </div>
+              )}
+            </div>
+
+            {/* Footer Actions */}
+            {!isProcessing && !processError && processResult && (
+              <div className="p-4 bg-gray-50/50 dark:bg-slate-900/30 border-t border-gray-100 dark:border-slate-800 flex justify-end gap-3">
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(processResult)
+                    alert('Texte copié dans le presse-papiers !')
+                  }}
+                  className="px-5 py-2.5 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 text-sm font-semibold text-gray-700 dark:text-gray-300 rounded-xl transition-all shadow-sm"
+                >
+                  Copier le texte
+                </button>
+                <button 
+                  onClick={() => setShowProcessModal(false)}
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold text-white rounded-xl transition-all shadow-sm"
+                >
+                  Terminer
+                </button>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
 
     </div>
   )
