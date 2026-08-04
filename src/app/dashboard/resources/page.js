@@ -19,6 +19,7 @@ export default function ResourcesPage() {
   const [processActionType, setProcessActionType] = useState('')
   const [showProcessModal, setShowProcessModal] = useState(false)
   const [processError, setProcessError] = useState(null)
+  const [relatedResources, setRelatedResources] = useState([])
 
   const supabase = createClient()
 
@@ -144,8 +145,10 @@ export default function ResourcesPage() {
     setProcessTitle(resource.title)
     setProcessActionType(actionType)
     setShowProcessModal(true)
+    setRelatedResources([])
 
     try {
+      // 1. Lancer la génération IA
       const res = await fetch('/api/resources/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -154,6 +157,15 @@ export default function ResourcesPage() {
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setProcessResult(data.result || '')
+
+      // 2. Récupérer les documents complémentaires liés
+      const { data: relatedData, error: relatedErr } = await supabase.rpc('get_related_resources', {
+        source_resource_id: resource.id,
+        match_count: 3
+      })
+      if (!relatedErr && relatedData) {
+        setRelatedResources(relatedData)
+      }
     } catch (err) {
       console.error('Process resource failed:', err)
       setProcessError(err.message)
@@ -422,6 +434,36 @@ export default function ResourcesPage() {
               ) : (
                 <div className="prose dark:prose-invert prose-indigo max-w-none text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
                   {processResult}
+                </div>
+              )}
+
+              {/* Related Resources / Documents en rapport (s4a) */}
+              {!isProcessing && !processError && relatedResources.length > 0 && (
+                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-slate-800">
+                  <h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    Documents complémentaires en rapport :
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {relatedResources.map((related) => (
+                      <div 
+                        key={related.resource_id}
+                        onClick={() => handleProcessResource({ id: related.resource_id, title: related.title }, processActionType)}
+                        className="flex items-center gap-3 p-3 rounded-2xl border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/30 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 hover:border-indigo-200 dark:hover:border-indigo-500/20 transition-all cursor-pointer group"
+                      >
+                        <div className="p-2 bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors shrink-0">
+                          <FileText size={16} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate group-hover:text-indigo-900 dark:group-hover:text-indigo-300 transition-colors">
+                            {related.title}
+                          </p>
+                          <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5 capitalize truncate">
+                            {related.source_type.replace('_', ' ')} • Similitude {Math.round(related.max_similarity * 100)}%
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
