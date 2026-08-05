@@ -19,7 +19,13 @@ export async function GET(req) {
       return NextResponse.json({ error: 'conversationId manquant' }, { status: 400 })
     }
 
-    // 3. Récupération des messages et des citations associées
+    // 3. Récupération des informations de la conversation et des messages associés
+    const { data: convData } = await supabase
+      .from('conversation')
+      .select('title')
+      .eq('id', conversationId)
+      .maybeSingle()
+
     const { data: dbMessages, error: fetchError } = await supabase
       .from('message')
       .select(`
@@ -35,6 +41,12 @@ export async function GET(req) {
             id,
             title
           )
+        ),
+        feedback (
+          id,
+          rating,
+          comment,
+          user_id
         )
       `)
       .eq('conversation_id', conversationId)
@@ -50,6 +62,7 @@ export async function GET(req) {
       role: msg.role,
       content: msg.content,
       has_context: msg.has_context,
+      userRating: msg.feedback?.find(f => f.user_id === user.id)?.rating || null,
       time: new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       citations: msg.citation?.map(cit => ({
         id: cit.id,
@@ -59,7 +72,10 @@ export async function GET(req) {
       })) || []
     }))
 
-    return NextResponse.json({ messages: formattedMessages })
+    return NextResponse.json({ 
+      messages: formattedMessages,
+      title: convData?.title || 'Nouvelle discussion'
+    })
 
   } catch (error) {
     console.error('Erreur API Chat History:', error)

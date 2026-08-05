@@ -17,6 +17,7 @@ export const metadata = {
 };
 
 import { ThemeProvider } from "@/components/theme-provider";
+import CookieBanner from "@/components/CookieBanner";
 
 export default function RootLayout({ children }) {
   return (
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           {children}
+          <CookieBanner />
         </ThemeProvider>
       </body>
     </html>

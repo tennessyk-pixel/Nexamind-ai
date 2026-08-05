@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sparkles, ArrowRight, FileText, Search, MessageSquare, Clock } from 'lucide-react'
+import { Sparkles, ArrowRight, FileText, Search, MessageSquare, Clock, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/utils/supabase/client'
 
@@ -9,6 +9,7 @@ export default function DashboardPage() {
   const [resourceCount, setResourceCount] = useState(0)
   const [readyPercent, setReadyPercent] = useState(0)
   const [recentConversations, setRecentConversations] = useState([])
+  const [feedbackStats, setFeedbackStats] = useState({ total: 0, positivePercent: 0 })
   const supabase = createClient()
 
   useEffect(() => {
@@ -36,6 +37,19 @@ export default function DashboardPage() {
         .limit(3)
 
       setRecentConversations(convs || [])
+
+      // Charger les statistiques de feedback IA
+      const { data: feedbacks } = await supabase
+        .from('feedback')
+        .select('rating')
+
+      if (feedbacks && feedbacks.length > 0) {
+        const positives = feedbacks.filter(f => f.rating === 'positive').length
+        setFeedbackStats({
+          total: feedbacks.length,
+          positivePercent: Math.round((positives / feedbacks.length) * 100)
+        })
+      }
     }
     fetchStats()
   }, [])
@@ -130,7 +144,7 @@ export default function DashboardPage() {
       {renderHero()}
 
       {/* Recent Activity / Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4">
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-7 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2.5 text-lg">
@@ -180,6 +194,33 @@ export default function DashboardPage() {
               <p className="text-sm font-medium text-indigo-600/80 dark:text-indigo-400/80">Indexé avec succès</p>
             </div>
           </div>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-7 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2.5 text-lg">
+                <div className="p-2 bg-green-50 dark:bg-green-500/10 rounded-lg">
+                  <ThumbsUp size={20} className="text-green-600 dark:text-green-400" />
+                </div>
+                Qualité & Feedbacks
+              </h3>
+              <span className="text-xs font-semibold px-2.5 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 rounded-full">RLHF</span>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gray-50 dark:bg-slate-800/50 p-5 rounded-2xl border border-gray-100 dark:border-slate-700/50 transition-all hover:bg-gray-100 dark:hover:bg-slate-800">
+                <p className="text-4xl font-black text-gray-900 dark:text-white mb-1.5">{feedbackStats.total}</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Votes enregistrés</p>
+              </div>
+              <div className="bg-green-50 dark:bg-green-500/10 p-5 rounded-2xl border border-green-100 dark:border-green-500/20 transition-all hover:bg-green-100 dark:hover:bg-green-500/20">
+                <p className="text-4xl font-black text-green-700 dark:text-green-400 mb-1.5">{feedbackStats.total > 0 ? `${feedbackStats.positivePercent}%` : '-'}</p>
+                <p className="text-sm font-medium text-green-600/80 dark:text-green-400/80">Jugées utiles (👍)</p>
+              </div>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-4 leading-relaxed">
+            Vos évaluations dans le chat permettent de mesurer la pertinence des réponses et d&apos;affiner continuellement l&apos;IA.
+          </p>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ArrowRight, User, Bot, FileText, ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowRight, User, Bot, FileText, ArrowLeft, Loader2, ThumbsUp, ThumbsDown } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { useChat } from '@ai-sdk/react'
@@ -37,6 +37,9 @@ export default function ChatConversationPage() {
   })
 
   const [inputValue, setInputValue] = useState('')
+  const [chatTitle, setChatTitle] = useState('Nouvelle discussion')
+  const [messageRatings, setMessageRatings] = useState({})
+  const [feedbackLoading, setFeedbackLoading] = useState({})
 
   const isLoading = status === 'submitted' || status === 'streaming'
 
@@ -45,6 +48,7 @@ export default function ChatConversationPage() {
     const q = searchParams.get('q')
     if (q && historyLoaded && messages.length === 1) {
       window.history.replaceState({}, '', `/dashboard/chat/${params.id}`)
+      setChatTitle(q.substring(0, 60))
       sendMessage({ text: q })
     }
   }, [searchParams, historyLoaded, sendMessage, messages.length, params.id])
@@ -56,8 +60,16 @@ export default function ChatConversationPage() {
         const res = await fetch(`/api/chat/history?conversationId=${params.id}`)
         if (res.ok) {
           const json = await res.json()
+          if (json.title && json.title !== 'Nouvelle discussion') {
+            setChatTitle(json.title)
+          }
           if (json.messages && json.messages.length > 0) {
             setMessages(json.messages)
+            const initialRatings = {}
+            json.messages.forEach(m => {
+              if (m.userRating) initialRatings[m.id] = m.userRating
+            })
+            setMessageRatings(initialRatings)
           }
         }
       } catch (err) {
@@ -86,10 +98,43 @@ export default function ChatConversationPage() {
     return ''
   }
 
+  // Gestion des feedbacks utilisateur 👍 / 👎 sur les messages IA
+  const handleFeedback = async (msg, rating) => {
+    if (msg.id === 'welcome' || feedbackLoading[msg.id]) return
+    setFeedbackLoading(prev => ({ ...prev, [msg.id]: true }))
+    try {
+      const content = getMessageText(msg)
+      const res = await fetch('/api/chat/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messageId: msg.id,
+          conversationId: params.id,
+          content,
+          rating
+        })
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setMessageRatings(prev => ({
+          ...prev,
+          [msg.id]: data.rating
+        }))
+      }
+    } catch (err) {
+      console.error("Erreur lors de l'envoi du feedback:", err)
+    } finally {
+      setFeedbackLoading(prev => ({ ...prev, [msg.id]: false }))
+    }
+  }
+
   // Soumission du formulaire
   const handleFormSubmit = (e) => {
     e.preventDefault()
     if (!inputValue.trim() || isLoading) return
+    if (messages.length <= 1) {
+      setChatTitle(inputValue.trim().substring(0, 60))
+    }
     sendMessage({ text: inputValue })
     setInputValue('')
   }
@@ -103,7 +148,7 @@ export default function ChatConversationPage() {
           <ArrowLeft size={20} />
         </Link>
         <h2 className="font-semibold text-gray-900 dark:text-white truncate text-sm">
-          Conversation #{params.id}
+          {chatTitle}
         </h2>
       </div>
 
@@ -132,7 +177,7 @@ export default function ChatConversationPage() {
                 )}
 
                 {/* Message Bubble */}
-                <div className={`flex flex-col gap-1 max-w-[85%] sm:max-w-[75%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+                <div className={`flex flex-col gap-1.5 max-w-[85%] sm:max-w-[75%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                   <div
                     className={`px-4 sm:px-5 py-3 rounded-2xl ${msg.role === 'user'
                         ? 'bg-indigo-600 text-white rounded-tr-sm'
@@ -143,6 +188,37 @@ export default function ChatConversationPage() {
                       {text}
                     </div>
                   </div>
+
+                  {/* Boutons de Feedback pour l'assistant */}
+                  {msg.role === 'assistant' && msg.id !== 'welcome' && status !== 'streaming' && (
+                    <div className="flex items-center gap-1.5 ml-1 mt-0.5">
+                      <button
+                        onClick={() => handleFeedback(msg, 'positive')}
+                        disabled={feedbackLoading[msg.id]}
+                        title="Réponse utile"
+                        className={`p-1.5 rounded-lg border transition-all text-xs flex items-center gap-1 shadow-2xs ${
+                          messageRatings[msg.id] === 'positive'
+                            ? 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-600 dark:text-green-400 font-medium'
+                            : 'bg-white/70 dark:bg-slate-900/70 border-gray-200 dark:border-slate-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-white dark:hover:bg-slate-800'
+                        }`}
+                      >
+                        <ThumbsUp size={13} className={messageRatings[msg.id] === 'positive' ? 'fill-current' : ''} />
+                        <span className="text-[10px] hidden sm:inline">Utile</span>
+                      </button>
+                      <button
+                        onClick={() => handleFeedback(msg, 'negative')}
+                        disabled={feedbackLoading[msg.id]}
+                        title="Réponse imprécise ou incorrecte"
+                        className={`p-1.5 rounded-lg border transition-all text-xs flex items-center gap-1 shadow-2xs ${
+                          messageRatings[msg.id] === 'negative'
+                            ? 'bg-red-50 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 font-medium'
+                            : 'bg-white/70 dark:bg-slate-900/70 border-gray-200 dark:border-slate-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-white dark:hover:bg-slate-800'
+                        }`}
+                      >
+                        <ThumbsDown size={13} className={messageRatings[msg.id] === 'negative' ? 'fill-current' : ''} />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Avatar User */}

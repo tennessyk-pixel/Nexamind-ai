@@ -64,6 +64,19 @@ export default function DashboardLayout({ children }) {
             <LogOut size={20} />
             Déconnexion
           </button>
+
+          {/* RGPD & Legal Footer */}
+          <div className="mt-4 pt-3 border-t border-gray-100 dark:border-slate-800/60 flex flex-col gap-1.5 text-[11px] text-gray-400 dark:text-gray-500 px-2">
+            <div className="flex items-center justify-between">
+              <span>© 2026 NexaWorks</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-[10px] px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-md">RGPD 🔒</span>
+            </div>
+            <div className="flex items-center gap-2 mt-0.5 text-gray-400">
+              <Link href="/legal/mentions-legales" className="hover:underline hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Mentions légales</Link>
+              <span>•</span>
+              <Link href="/legal/cgu" className="hover:underline hover:text-gray-600 dark:hover:text-gray-300 transition-colors">CGU / RGPD</Link>
+            </div>
+          </div>
         </div>
       </aside>
 

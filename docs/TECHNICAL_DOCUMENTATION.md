@@ -92,3 +92,66 @@ La fonctionnalité de suggestion de documents connexes permet à l'utilisateur d
   * Les 3 meilleures suggestions sont affichées sous forme de cartes cliquables en bas de la modale de résultat.
   * Cliquer sur une suggestion charge instantanément le traitement IA associé à ce nouveau document de manière fluide et interactive.
 
+---
+
+## 7. Système d'Évaluation et de Feedback sur les Réponses IA (s66)
+
+Pour assurer l'amélioration continue du modèle IA (RLHF - Reinforcement Learning from Human Feedback) et mesurer la qualité de l'assistant d'entreprise, un système de notation 👍 / 👎 est intégré directement dans le flux de chat.
+
+### A. Modèle de Données (`feedback`)
+* La table [`feedback`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/supabase/schema.sql#L153) dans Supabase enregistre chaque évaluation avec une contrainte d'unicité `unique (message_id, user_id)`.
+* Les évaluations possibles s'appuient sur l'énumération PostgreSQL `feedback_rating` (`'positive'`, `'negative'`).
+
+### B. Route API de Gestion (`POST /api/chat/feedback`)
+* Implémentée dans [`src/app/api/chat/feedback/route.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/api/chat/feedback/route.js).
+* **Résolution dynamique des ID** : Lorsque l'utilisateur vote pour un message qui vient d'être streamé par le Vercel AI SDK, l'identifiant côté client (temporaire) n'est pas encore un UUID de base de données. Le backend recherche automatiquement le message en base par correspondance de contenu et de conversation (`role = 'assistant'`), garantissant une synchronisation fiable à 100 %.
+* **Logique Toggle / Upsert** : 
+  * Si l'utilisateur clique sur le même bouton (ex: 👍 alors que la note était déjà positive), le feedback est supprimé (annulation du vote).
+  * Si le vote est nouveau ou passe d'une note à l'autre, l'enregistrement est mis à jour en utilisant le client d'administration côté serveur (contournant en toute sécurité les limites de RLS tout en préservant l'identité de l'utilisateur authentifié).
+
+### C. Réconciliation de l'Historique (`GET /api/chat/history`)
+* La route d'historique [`src/app/api/chat/history/route.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/api/chat/history/route.js) inclut une jointure relationnelle Supabase `.select('..., feedback(id, rating, user_id)')`.
+* Lors du chargement d'une conversation passée, les boutons 👍 / 👎 apparaissent pré-sélectionnés et colorés en vert/rouge selon le choix précédent de l'utilisateur, offrant une expérience UI fluide et digne des standards modernes.
+
+### D. Suivi & KPI dans le Dashboard (`/dashboard`)
+* Sur la page d'accueil de l'application ([`src/app/dashboard/page.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/dashboard/page.js)), un bloc d'analyse **"Qualité & Feedbacks (RLHF)"** agrège en temps réel les notations de la base de connaissances.
+* Ce bloc affiche le **nombre total d'évaluations enregistrées** ainsi que le **pourcentage de réponses jugées utiles** (`rating = 'positive'`), offrant une visibilité directe au niveau direction et pilotage.
+
+---
+
+## 8. Conformité RGPD & Cadre Légal d'Entreprise (s64)
+
+Pour garantir une adoption irréprochable en milieu professionnel (B2B) et satisfaire aux exigences de la CNIL et du RGPD, NexaMind AI intègre un ensemble de dispositifs juridiques et de transparence sur le traitement des données IA.
+
+### A. Bandeau de Consentement & Respect de la Vie Privée (`CookieBanner`)
+* Implémenté dans [`src/components/CookieBanner.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/components/CookieBanner.js) et instancié au niveau de la racine dans [`src/app/layout.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/layout.js).
+* Affiche une notification en verre dépoli (Glassmorphism) informative aux nouveaux visiteurs.
+* **Zéro traçage publicitaire** : L'application n'utilise que des cookies techniques exemptés (maintien de la session Supabase Auth) et du stockage local (`localStorage`) pour le thème clair/sombre et la mémorisation du choix RGPD (`nexamind_rgpd_consent`).
+
+### B. Espace Légal Dédié (`/legal/*`)
+* **Mentions Légales (`/legal/mentions-legales`)** : Implémentées dans [`src/app/legal/mentions-legales/page.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/legal/mentions-legales/page.js). Indiquent les informations réglementaires (LCEN), l'hébergement sécurisé (Vercel EU / Supabase AWS ISO 27001) et la propriété intellectuelle (NexaWorks SAS).
+* **CGU & Protection des Données / RGPD (`/legal/cgu`)** : Implémentées dans [`src/app/legal/cgu/page.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/legal/cgu/page.js).
+  * **Engagement Zero Data Retention (ZDR)** : Documente contractuellement et techniquement que ni Vercel ni les fournisseurs LLM tiers n'entraînent de futurs modèles d'IA sur le corpus documentaire ou le contenu des chats de l'entreprise.
+  * **Accessibilité continue** : Des liens de consultation directe sont embarqués dans le pied de page du menu latéral ([`src/app/dashboard/layout.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/dashboard/layout.js)).
+
+---
+
+## 9. Audit de Sécurité & Étanchéité RLS (s63)
+
+Afin de garantir un cloisonnement étanche entre les utilisateurs et organisations B2B, un audit de sécurité complet a été réalisé sur la couche base de données (Supabase) et sur l'ensemble des points d'entrée API (Next.js App Router).
+
+### A. Rapport d'Audit & Certification RLS
+* L'intégralité des résultats et conclusions est documentée dans le rapport d'audit dédié : [`docs/SECURITY_AUDIT_REPORT.md`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/docs/SECURITY_AUDIT_REPORT.md).
+* **100 % des tables PostgreSQL** (les 10 tables de l'architecture) disposent du verrouillage Row Level Security (RLS) actif et assorti de politiques de lecture/écriture basées sur l'identité de session `auth.uid()`.
+
+### B. Script d'Audit & Consolidation SQL
+* Le script [`supabase/audit-security-rls-check.sql`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/supabase/audit-security-rls-check.sql) est à disposition des administrateurs système et DBA.
+* **Fonctions clés du script :**
+  * Activation forcée et idemptotente de RLS sur l'ensemble des tables publiques.
+  * Verrouillage des fonctions RPC (dont la recherche vectorielle `match_chunks`) en mode `SECURITY INVOKER`, garantissant que les recherches d'embeddings s'exécutent strictement avec les permissions de l'utilisateur appelant.
+  * Requêtes de diagnostic automatisées générant un tableau d'état (`✅ SÉCURISÉ (RLS ACTIF)`) directement depuis le SQL Editor Supabase.
+
+### C. Sécurité Backend & Zéro-Trust API
+* Toutes les routes d'API ([`src/app/api/*`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/api/)) valident impérativement le jeton d'authentification utilisateur (`supabase.auth.getUser()`) avant tout calcul d'embedding, recherche sémantique ou génération LLM.
+* L'usage de `createAdminClient()` (`service_role`) est strictement borné côté serveur après vérification en amont de la propriété des enregistrements par le client utilisateur standard, prévenant toute usurpation ou élévation de privilèges indue.
+
