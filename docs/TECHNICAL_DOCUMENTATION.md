@@ -155,3 +155,25 @@ Afin de garantir un cloisonnement étanche entre les utilisateurs et organisatio
 * Toutes les routes d'API ([`src/app/api/*`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/api/)) valident impérativement le jeton d'authentification utilisateur (`supabase.auth.getUser()`) avant tout calcul d'embedding, recherche sémantique ou génération LLM.
 * L'usage de `createAdminClient()` (`service_role`) est strictement borné côté serveur après vérification en amont de la propriété des enregistrements par le client utilisateur standard, prévenant toute usurpation ou élévation de privilèges indue.
 
+---
+
+## 10. Livrables de Soutenance, Bilan Technique & Déploiement Cloud (s67, s68, s69)
+
+Dans l'optique de la soutenance finale du projet et de sa transition en production publique dans le cloud, trois livrables documentaires d'excellence ont été réalisés selon le référentiel BMAD.
+
+### A. Scénario de Présentation & Démo Chronométré (`DEMO_SCRIPT_15MIN.md`)
+* Documenté dans [`docs/DEMO_SCRIPT_15MIN.md`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/docs/DEMO_SCRIPT_15MIN.md).
+* Définit le déroulé exact à la minute près pour une intervention orale et technique de 15 minutes.
+* Ordonnancer les écrans à présenter : Diaporama ➔ Console Backend Supabase (Tables & RLS) ➔ Application Live en ligne (Ingestion, RAG Chat, Citations et RLHF) ➔ Code source dans l'IDE ([`api/ingest/route.js`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/src/app/api/ingest/route.js)).
+
+### B. Structure du Diaporama de Pitch (`SLIDES_STRUCTURE_PITCH.md`)
+* Documenté dans [`docs/SLIDES_STRUCTURE_PITCH.md`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/docs/SLIDES_STRUCTURE_PITCH.md).
+* Fournit le plan de contenu et les notes orateur pour 10 diapos couvrant le problème métier, la solution de copilote Zéro-Trust, la stack PGVector et la feuille de route.
+
+### C. Bilan Technologique, Justification de Stack & Roadmap V2/V3 (`BILAN_PERSPECTIVES_V2.md`)
+* Documenté dans [`docs/BILAN_PERSPECTIVES_V2.md`](file:///c:/Users/Win10/.gemini/antigravity/scratch/nexamind-ai/docs/BILAN_PERSPECTIVES_V2.md).
+* **Justification FinOps/SecOps :** Explicite les choix fondamentaux de l'architecture, notamment l'utilisation du modèle local `@xenova/transformers` (`gte-small` en 384 dimensions) qui supprime la dépendance d'une API de vectorisation payante externe et protège l'intimité des corpus d'entreprise.
+* **Évolutions futures (V2 / V3) :** Planifie le passage du MVP à l'échelle (connecteurs SharePoint / Google Drive en temps réel, gestion de rôles en entreprise RBAC) et aux workflows d'agents autonomes proactifs.
+* **Guide de publication Cloud :** Intègre le mode d'emploi pas-à-pas pour la mise en ligne immédiate en intégration continue (CI/CD) sur la plateforme **Vercel** et la configuration des clés secrètes d'environnement.
+
+
