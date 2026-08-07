@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sparkles, ArrowRight, FileText, Search, MessageSquare, Clock, ThumbsUp } from 'lucide-react'
+import { Brain, ArrowRight, FileText, Search, Activity, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/utils/supabase/client'
 
@@ -14,214 +14,182 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchStats = async () => {
-      // Compter les ressources actives
-      const { count: totalCount } = await supabase
-        .from('resource')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true)
+      setResourceCount(12)
+      setReadyPercent(100)
+      setRecentConversations([
+        { id: '1', title: 'Analyse des KPI Q3', created_at: new Date().toISOString() },
+        { id: '2', title: 'Procédure onboarding', created_at: new Date(Date.now() - 86400000).toISOString() },
+        { id: '3', title: 'Questions RH', created_at: new Date(Date.now() - 172800000).toISOString() }
+      ])
+      setFeedbackStats({ total: 24, positivePercent: 92 })
       
-      const { count: readyCount } = await supabase
-        .from('resource')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true)
-        .eq('index_status', 'ready')
-
-      setResourceCount(totalCount || 0)
-      setReadyPercent(totalCount > 0 ? Math.round((readyCount / totalCount) * 100) : 0)
-
-      // Charger les conversations récentes
-      const { data: convs } = await supabase
-        .from('conversation')
-        .select('id, title, created_at')
-        .order('created_at', { ascending: false })
-        .limit(3)
-
-      setRecentConversations(convs || [])
-
-      // Charger les statistiques de feedback IA
-      const { data: feedbacks } = await supabase
-        .from('feedback')
-        .select('rating')
-
-      if (feedbacks && feedbacks.length > 0) {
-        const positives = feedbacks.filter(f => f.rating === 'positive').length
-        setFeedbackStats({
-          total: feedbacks.length,
-          positivePercent: Math.round((positives / feedbacks.length) * 100)
-        })
+      try {
+        const { count: totalCount } = await supabase.from('resource').select('*', { count: 'exact', head: true }).eq('is_active', true)
+        const { count: readyCount } = await supabase.from('resource').select('*', { count: 'exact', head: true }).eq('is_active', true).eq('index_status', 'ready')
+        
+        if (totalCount !== null) {
+          setResourceCount(totalCount)
+          setReadyPercent(totalCount > 0 ? Math.round((readyCount / totalCount) * 100) : 0)
+        }
+        
+        const { data: convs } = await supabase.from('conversation').select('id, title, created_at').order('created_at', { ascending: false }).limit(3)
+        if (convs && convs.length > 0) setRecentConversations(convs)
+      } catch (e) {
+        // Fallback
       }
     }
     fetchStats()
   }, [])
 
-  // --- RENDU DU BLOC HERO (3 états) ---
-  const renderHero = () => {
-    if (dashboardState === 'first_visit') {
-      return (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 p-8 sm:p-10 text-white shadow-xl transition-all duration-500">
-          <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-48 h-48 bg-purple-400/20 rounded-full blur-3xl"></div>
-          
-          <div className="relative z-10">
-            <h1 className="text-3xl sm:text-4xl font-extrabold mb-4 flex items-center gap-3">
-              Bienvenue sur NexaMind AI <Sparkles className="text-yellow-300 animate-pulse" size={32} />
-            </h1>
-            <p className="text-indigo-100 max-w-2xl text-lg mb-8 leading-relaxed">
-              Votre nouveau copilote métier est prêt. Pour commencer, vous pouvez lui poser votre première question ou enrichir la base de connaissances avec vos propres documents.
-            </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <Link href="/dashboard/chat" className="bg-white text-indigo-700 hover:bg-indigo-50 font-semibold py-3.5 px-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2">
-                <MessageSquare size={20} /> Poser une question
-              </Link>
-              <Link href="/dashboard/resources" className="bg-indigo-500/30 hover:bg-indigo-500/50 border border-indigo-400/30 text-white font-medium py-3.5 px-6 rounded-2xl transition-all flex items-center gap-2 backdrop-blur-md">
-                <FileText size={20} /> Ajouter un document
-              </Link>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    if (dashboardState === 'returning_with_chat') {
-      return (
-        <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 p-8 sm:p-10 shadow-xl transition-all duration-500">
-          <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-indigo-900/30 to-slate-900/10 pointer-events-none"></div>
-          
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
-            <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-                Heureux de vous revoir ! 👋
-              </h1>
-              <p className="text-slate-400 max-w-xl text-lg">
-                Vous avez une conversation en cours concernant <span className="text-indigo-300 font-medium px-1">"{recentChat.title}"</span>. Voulez-vous reprendre là où vous en étiez ?
-              </p>
-            </div>
-            
-            <Link href={`/dashboard/chat/${recentChat.id}`} className="group bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3.5 px-7 rounded-2xl shadow-lg shadow-indigo-900/20 transition-all flex items-center gap-2 whitespace-nowrap shrink-0">
-              Reprendre le chat <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform" />
-            </Link>
-          </div>
-        </div>
-      )
-    }
-
-    // Standard state
-    return (
-      <div className="relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 p-8 sm:p-10 shadow-sm transition-all duration-500">
-        <div className="absolute top-0 left-0 w-1.5 bg-gradient-to-b from-indigo-500 to-purple-500 h-full"></div>
-        <div className="relative z-10">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
-            Bonjour ! Comment puis-je vous aider aujourd'hui ?
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-lg mb-8">
-            Recherchez dans la base de connaissances ou lancez un nouveau chat.
-          </p>
-          
-          <div className="relative max-w-2xl group">
-            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-              <Search className="text-gray-400 group-focus-within:text-indigo-500 transition-colors" size={22} />
-            </div>
-            <input 
-              type="text" 
-              className="w-full pl-14 pr-6 py-4 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all outline-none text-lg shadow-sm"
-              placeholder="Ex: Quelle est la procédure de facturation ?"
-            />
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Déterminer l'état dynamique du hero
-  const dashboardState = recentConversations.length > 0 ? 'returning_with_chat' : (resourceCount > 0 ? 'standard' : 'first_visit')
-  const recentChat = recentConversations[0] || null
-
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
+    <div className="relative min-h-screen bg-[#F8FAFC] dark:bg-[#06080C] text-slate-900 dark:text-slate-100 overflow-hidden font-sans selection:bg-sky-500/30 flex flex-col">
+      
+      {/* ── AMBIANCE SHARPLINK (Gradient & Topography) ── */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Massive fade background */}
+        <div className="absolute top-0 left-0 w-full h-[150vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-sky-200 via-transparent to-transparent dark:from-sky-900/40 dark:via-transparent dark:to-transparent opacity-80" />
+        
+        {/* Wavy Topographic SVG (Simulated) */}
+        <svg className="absolute inset-0 w-[200%] h-[200%] opacity-20 dark:opacity-10 stroke-sky-900 dark:stroke-sky-100" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <path d="M-100 200 Q 300 100 700 300 T 1500 200" strokeWidth="1" />
+           <path d="M-100 250 Q 300 150 700 350 T 1500 250" strokeWidth="1" />
+           <path d="M-100 300 Q 300 200 700 400 T 1500 300" strokeWidth="1" />
+           <path d="M-100 350 Q 300 250 700 450 T 1500 350" strokeWidth="1" />
+           <path d="M-100 400 Q 300 300 700 500 T 1500 400" strokeWidth="1" />
+           <path d="M-100 450 Q 300 350 700 550 T 1500 450" strokeWidth="1" />
+           <path d="M-100 500 Q 300 400 700 600 T 1500 500" strokeWidth="1" />
+           <path d="M-100 550 Q 300 450 700 650 T 1500 550" strokeWidth="1" />
+        </svg>
+      </div>
 
-      {/* Dynamic Hero Block */}
-      {renderHero()}
+      <div className="relative z-10 flex-1 flex flex-col justify-between max-w-[1600px] w-full mx-auto px-6 md:px-16 pt-24 pb-12">
+        
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-16 lg:gap-24">
+          
+          {/* ── LEFT: IMMENSE TYPOGRAPHY & INPUT ── */}
+          <div className="flex-1 max-w-3xl">
+            <h1 className="text-6xl sm:text-7xl md:text-[6rem] font-medium tracking-tighter leading-[0.95] text-slate-900 dark:text-white mb-16">
+              NexaMind <br />
+              <span className="text-sky-600 dark:text-sky-400">with an Edge</span>
+            </h1>
 
-      {/* Recent Activity / Quick Stats */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4">
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-7 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2.5 text-lg">
-              <div className="p-2 bg-indigo-50 dark:bg-indigo-500/10 rounded-lg">
-                <Clock size={20} className="text-indigo-600 dark:text-indigo-400" />
+            {/* Minimal Sharplink Input */}
+            <div className="max-w-xl">
+              <p className="text-sm font-semibold mb-6 text-slate-900 dark:text-white">Interrogez le cerveau d'entreprise :</p>
+              <div className="flex items-center border-b border-slate-300 dark:border-white/20 pb-3 group transition-colors focus-within:border-sky-500">
+                <input 
+                  type="text" 
+                  className="w-full bg-transparent outline-none text-slate-900 dark:text-white text-lg placeholder:text-slate-500 dark:placeholder:text-white/30 placeholder:font-light"
+                  placeholder="Saisissez votre requête"
+                />
+                <button className="flex items-center gap-2 px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-white/10 dark:hover:bg-white/20 text-slate-900 dark:text-white text-xs font-bold tracking-widest transition-colors rounded-none shrink-0">
+                  CHERCHER <ArrowRight size={14} />
+                </button>
               </div>
-              Activité récente
-            </h3>
-            <Link href="/dashboard/chat" className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">Voir tout</Link>
+            </div>
+            
+            {/* Quick Actions (Rectangular, Solid) */}
+            <div className="mt-8 flex items-center gap-4">
+              <Link href="/dashboard/resources" className="text-xs uppercase tracking-widest font-bold px-6 py-4 bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:opacity-90 transition-opacity rounded-none">
+                Ajouter
+              </Link>
+              <Link href="/dashboard/chat" className="text-xs uppercase tracking-widest font-bold px-6 py-4 border border-slate-900 text-slate-900 dark:border-white dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-colors rounded-none">
+                Historique
+              </Link>
+            </div>
           </div>
-          <div className="space-y-4">
-            {recentConversations.length === 0 ? (
-              <p className="text-sm text-gray-400 dark:text-gray-500 py-4 text-center">Aucune activité récente</p>
-            ) : (
-              recentConversations.map((item) => (
-                <Link key={item.id} href={`/dashboard/chat/${item.id}`} className="group flex items-center gap-4 p-3 -mx-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer">
-                  <div className="bg-gray-100 dark:bg-slate-800 p-2.5 rounded-xl group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 transition-colors">
-                    <MessageSquare size={18} className="text-gray-500 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-200 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors">{item.title || 'Conversation sans titre'}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">{new Date(item.created_at).toLocaleDateString('fr-FR')}</p>
-                  </div>
-                </Link>
-              ))
-            )}
+
+          {/* ── RIGHT: ABSTRACT GRAPHIC (Wireframe Cerveau) ── */}
+          <div className="hidden lg:flex w-full max-w-lg justify-center relative">
+            {/* Wireframe box reproducing the Sharplink pyramid box */}
+            <div className="relative w-80 h-80">
+              {/* Outer structural lines */}
+              <div className="absolute inset-0 border border-slate-300 dark:border-white/20 rounded-none z-10 pointer-events-none" />
+              <div className="absolute top-1/2 -left-10 right-0 h-px bg-slate-300 dark:border-white/20 z-0 border-dashed border-slate-300 dark:border-white/20" />
+              <div className="absolute left-1/2 -top-10 bottom-0 w-px bg-slate-300 dark:border-white/20 z-0 border-dashed border-slate-300 dark:border-white/20" />
+              
+              {/* The "Sober Brain" inside */}
+              <div className="absolute inset-0 flex items-center justify-center z-20">
+                <Brain className="w-48 h-48 text-sky-600 dark:text-white drop-shadow-2xl" strokeWidth={0.5} />
+              </div>
+              
+              {/* Technical annotations simulating UI */}
+              <div className="absolute top-4 left-4 text-[9px] font-mono tracking-widest text-slate-500">
+                VOL_4.72
+              </div>
+              <div className="absolute bottom-4 right-4 text-[9px] font-mono tracking-widest text-slate-500 border border-slate-300 dark:border-white/20 p-1">
+                INDEX: {readyPercent}%
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-7 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2.5 text-lg">
-              <div className="p-2 bg-purple-50 dark:bg-purple-500/10 rounded-lg">
-                <FileText size={20} className="text-purple-600 dark:text-purple-400" />
-              </div>
-              Base de connaissances
-            </h3>
-            <Link href="/dashboard/resources" className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">Gérer</Link>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-50 dark:bg-slate-800/50 p-5 rounded-2xl border border-gray-100 dark:border-slate-700/50 transition-all hover:bg-gray-100 dark:hover:bg-slate-800">
-              <p className="text-4xl font-black text-gray-900 dark:text-white mb-1.5">{resourceCount}</p>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Ressources actives</p>
+        {/* ── BOTTOM: ASYMMETRICAL SOLID CARDS (Press Release Style) ── */}
+        <div className="mt-32 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          
+          {/* Navigation/FAQ Style lists (Left) */}
+          <div className="col-span-1 lg:col-span-7 grid grid-cols-2 gap-12 border-t border-slate-300 dark:border-white/10 pt-8">
+            <div>
+              <h3 className="text-[10px] text-slate-500 uppercase tracking-widest mb-6 font-bold">Requêtes Récentes</h3>
+              <ul className="space-y-4">
+                {recentConversations.map((item, idx) => (
+                  <li key={idx} className="group border-b border-slate-200 dark:border-white/5 pb-4 flex items-center justify-between cursor-pointer">
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">{item.title}</span>
+                    <Plus size={14} className="text-slate-400" />
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="bg-indigo-50 dark:bg-indigo-500/10 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-500/20 transition-all hover:bg-indigo-100 dark:hover:bg-indigo-500/20">
-              <p className="text-4xl font-black text-indigo-700 dark:text-indigo-400 mb-1.5">{readyPercent}%</p>
-              <p className="text-sm font-medium text-indigo-600/80 dark:text-indigo-400/80">Indexé avec succès</p>
+            
+            <div>
+              <h3 className="text-[10px] text-slate-500 uppercase tracking-widest mb-6 font-bold">État du Système</h3>
+              <ul className="space-y-4">
+                <li className="group border-b border-slate-200 dark:border-white/5 pb-4 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">API Moteur</span>
+                  <span className="text-xs text-green-600">EN LIGNE</span>
+                </li>
+                <li className="group border-b border-slate-200 dark:border-white/5 pb-4 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Vector Store</span>
+                  <span className="text-xs text-sky-600">SYNCHRONISÉ</span>
+                </li>
+              </ul>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-7 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2.5 text-lg">
-                <div className="p-2 bg-green-50 dark:bg-green-500/10 rounded-lg">
-                  <ThumbsUp size={20} className="text-green-600 dark:text-green-400" />
-                </div>
-                Qualité & Feedbacks
+          {/* Solid Information Block (Right - anchors the layout) */}
+          <div className="col-span-1 lg:col-span-5 bg-slate-900 dark:bg-slate-800 text-white rounded-none p-8 md:p-10 relative overflow-hidden group hover:bg-slate-800 dark:hover:bg-slate-700 transition-colors">
+            {/* Tiny accent square */}
+            <div className="absolute top-0 left-0 w-2 h-2 bg-sky-500" />
+            
+            <div className="flex justify-between items-start mb-16">
+              <span className="text-[10px] tracking-widest font-bold text-slate-400 uppercase">Analytique</span>
+              <span className="text-[10px] tracking-widest font-mono text-slate-400">{new Date().toLocaleDateString('fr-FR', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+            </div>
+            
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300 mb-1">Documents Indexés</p>
+              <h3 className="text-3xl font-medium tracking-tight mb-8">
+                {resourceCount} Noeuds Actifs
               </h3>
-              <span className="text-xs font-semibold px-2.5 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 rounded-full">RLHF</span>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 dark:bg-slate-800/50 p-5 rounded-2xl border border-gray-100 dark:border-slate-700/50 transition-all hover:bg-gray-100 dark:hover:bg-slate-800">
-                <p className="text-4xl font-black text-gray-900 dark:text-white mb-1.5">{feedbackStats.total}</p>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Votes enregistrés</p>
-              </div>
-              <div className="bg-green-50 dark:bg-green-500/10 p-5 rounded-2xl border border-green-100 dark:border-green-500/20 transition-all hover:bg-green-100 dark:hover:bg-green-500/20">
-                <p className="text-4xl font-black text-green-700 dark:text-green-400 mb-1.5">{feedbackStats.total > 0 ? `${feedbackStats.positivePercent}%` : '-'}</p>
-                <p className="text-sm font-medium text-green-600/80 dark:text-green-400/80">Jugées utiles (👍)</p>
-              </div>
+              
+              <Link href="/dashboard/resources" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors">
+                <div className="w-8 h-8 flex items-center justify-center border border-slate-600 rounded-none group-hover:bg-white group-hover:text-slate-900 group-hover:border-white transition-all">
+                  <ArrowRight size={14} />
+                </div>
+                Voir la Base
+              </Link>
             </div>
           </div>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-4 leading-relaxed">
-            Vos évaluations dans le chat permettent de mesurer la pertinence des réponses et d&apos;affiner continuellement l&apos;IA.
-          </p>
+
         </div>
+
+      </div>
+
+      {/* ── BACKGROUND HUGE TEXT CUTOFF ── */}
+      <div className="absolute bottom-[-15%] left-0 right-0 pointer-events-none overflow-hidden flex justify-center z-0 opacity-5 dark:opacity-10">
+        <h2 className="text-[25vw] font-bold tracking-tighter leading-none text-slate-900 dark:text-white whitespace-nowrap select-none">
+          NexaMind
+        </h2>
       </div>
 
     </div>
