@@ -111,13 +111,49 @@ export default function SettingsPage() {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Informations personnelles</h2>
               
               <div className="flex items-center gap-6 mb-8">
-                <div className="w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl font-bold uppercase">
-                  {fullName ? fullName.substring(0, 2) : userProfile?.email?.substring(0, 2) || 'UU'}
+                <div className="w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl font-bold uppercase overflow-hidden">
+                  {userProfile?.avatar_url ? (
+                    <img src={userProfile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    fullName ? fullName.substring(0, 2) : userProfile?.email?.substring(0, 2) || 'UU'
+                  )}
                 </div>
                 <div>
-                  <button className="px-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors text-gray-700 dark:text-gray-300">
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    id="avatar-upload" 
+                    className="hidden" 
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (!file) return
+                      const reader = new FileReader()
+                      reader.onloadend = async () => {
+                        const base64String = reader.result
+                        setSaveStatus('saving')
+                        try {
+                          const { data, error } = await supabase.auth.updateUser({
+                            data: { avatar_url: base64String }
+                          })
+                          if (error) throw error
+                          setUserProfile(prev => ({ ...prev, avatar_url: base64String }))
+                          setSaveStatus('success')
+                          setTimeout(() => setSaveStatus(null), 3000)
+                        } catch (err) {
+                          setSaveError(err.message)
+                          setSaveStatus('error')
+                          setTimeout(() => setSaveStatus(null), 5000)
+                        }
+                      }
+                      reader.readAsDataURL(file)
+                    }}
+                  />
+                  <label 
+                    htmlFor="avatar-upload"
+                    className="px-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors text-gray-700 dark:text-gray-300 cursor-pointer inline-block"
+                  >
                     Changer d'avatar
-                  </button>
+                  </label>
                 </div>
               </div>
 

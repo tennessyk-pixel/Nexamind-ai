@@ -9,7 +9,9 @@ const openrouter = createOpenAI({
   compatibility: 'compatible',
 })
 
-const modelName = process.env.NEXT_PUBLIC_AI_MODEL || 'google/gemma-4-26b-a4b-it:free'
+let envModel = process.env.NEXT_PUBLIC_AI_MODEL
+if (envModel === 'google/gemma-4-26b-a4b-it:free') envModel = null // Ignore old bad model
+const modelName = envModel || 'google/gemma-2-9b-it:free'
 
 export async function POST(req) {
   try {
