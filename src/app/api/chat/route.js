@@ -2,7 +2,7 @@ import { createOpenAI } from '@ai-sdk/openai'
 import { streamText } from 'ai'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
-import { pipeline } from '@xenova/transformers'
+import { getEmbedding } from '@/utils/embeddings'
 
 // Configuration de OpenRouter en utilisant le SDK OpenAI natif
 const openrouter = createOpenAI({
@@ -10,15 +10,6 @@ const openrouter = createOpenAI({
   apiKey: process.env.OPENROUTER_API_KEY,
   compatibility: 'compatible',
 })
-
-// Initialisation du modèle d'embeddings (gte-small) en singleton
-let extractor = null
-async function getExtractor() {
-  if (!extractor) {
-    extractor = await pipeline('feature-extraction', 'Xenova/gte-small')
-  }
-  return extractor
-}
 
 export async function POST(req) {
   try {
@@ -51,9 +42,7 @@ export async function POST(req) {
 
     if (lastUserMessage && lastUserMessage.role === 'user') {
       try {
-        const extract = await getExtractor()
-        const output = await extract(lastUserText, { pooling: 'mean', normalize: true })
-        const queryEmbedding = Array.from(output.data)
+        const queryEmbedding = await getEmbedding(lastUserText)
 
         // Appel RPC pour trouver les chunks pertinents
         const { data: matchedChunks, error: matchError } = await supabase.rpc('match_chunks', {

@@ -1,15 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
-import { pipeline } from '@xenova/transformers'
-
-let extractor = null
-async function getExtractor() {
-  if (!extractor) {
-    extractor = await pipeline('feature-extraction', 'Xenova/gte-small')
-  }
-  return extractor
-}
+import { getEmbedding } from '@/utils/embeddings'
 
 export async function POST(req) {
   try {
@@ -26,9 +18,7 @@ export async function POST(req) {
     }
 
     // Embed the query
-    const extract = await getExtractor()
-    const output = await extract(query, { pooling: 'mean', normalize: true })
-    const queryEmbedding = Array.from(output.data)
+    const queryEmbedding = await getEmbedding(query)
 
     // Call match_chunks
     const { data: matchedChunks, error: matchError } = await supabase.rpc('match_chunks', {

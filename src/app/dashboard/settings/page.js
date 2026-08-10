@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { User, Moon, Sun, Monitor, Bell, Shield, Search, History, Save, LogOut } from 'lucide-react'
+import { User, Moon, Sun, Monitor, Bell, Shield, Search, History, Save, LogOut, Check, AlertCircle } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 
 export default function SettingsPage() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState('profile')
   const [userProfile, setUserProfile] = useState(null)
   const [searchHistory, setSearchHistory] = useState([])
+  const [fullName, setFullName] = useState('')
+  const [saveStatus, setSaveStatus] = useState(null) // null | 'saving' | 'success' | 'error'
+  const [saveError, setSaveError] = useState('')
   const supabase = createClient()
 
   useEffect(() => {
@@ -26,6 +29,7 @@ export default function SettingsPage() {
           .single()
         
         setUserProfile({ ...user, ...profile })
+        setFullName(profile?.full_name || '')
 
         // Fetch search history
         const { data: history } = await supabase
@@ -39,6 +43,29 @@ export default function SettingsPage() {
     }
     fetchUserData()
   }, [])
+
+  const handleSaveProfile = async () => {
+    if (!userProfile) return
+    setSaveStatus('saving')
+    setSaveError('')
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ full_name: fullName })
+        .eq('id', userProfile.id)
+
+      if (error) throw error
+
+      setSaveStatus('success')
+      setUserProfile(prev => ({ ...prev, full_name: fullName }))
+      setTimeout(() => setSaveStatus(null), 3000)
+    } catch (err) {
+      setSaveStatus('error')
+      setSaveError(err.message)
+      setTimeout(() => setSaveStatus(null), 5000)
+    }
+  }
 
   return (
     <div className="p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto min-h-[calc(100vh-64px)] animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
@@ -85,7 +112,7 @@ export default function SettingsPage() {
               
               <div className="flex items-center gap-6 mb-8">
                 <div className="w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl font-bold uppercase">
-                  {userProfile?.full_name ? userProfile.full_name.substring(0, 2) : userProfile?.email?.substring(0, 2) || 'UU'}
+                  {fullName ? fullName.substring(0, 2) : userProfile?.email?.substring(0, 2) || 'UU'}
                 </div>
                 <div>
                   <button className="px-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors text-gray-700 dark:text-gray-300">
@@ -97,7 +124,7 @@ export default function SettingsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Nom complet</label>
-                  <input type="text" defaultValue={userProfile?.full_name || ''} className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
+                  <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Adresse e-mail</label>
@@ -105,9 +132,25 @@ export default function SettingsPage() {
                 </div>
               </div>
 
+              {/* Save feedback */}
+              {saveStatus === 'success' && (
+                <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-500/10 px-4 py-2.5 rounded-xl border border-green-200 dark:border-green-500/20">
+                  <Check size={16} /> Profil mis à jour avec succès !
+                </div>
+              )}
+              {saveStatus === 'error' && (
+                <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-4 py-2.5 rounded-xl border border-red-200 dark:border-red-500/20">
+                  <AlertCircle size={16} /> Erreur : {saveError}
+                </div>
+              )}
+
               <div className="pt-6 mt-6 border-t border-gray-100 dark:border-slate-800 flex justify-end">
-                <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-6 rounded-xl transition-all shadow-sm">
-                  <Save size={18} /> Enregistrer les modifications
+                <button 
+                  onClick={handleSaveProfile}
+                  disabled={saveStatus === 'saving'}
+                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-6 rounded-xl transition-all shadow-sm disabled:opacity-50"
+                >
+                  <Save size={18} /> {saveStatus === 'saving' ? 'Enregistrement...' : 'Enregistrer les modifications'}
                 </button>
               </div>
             </div>

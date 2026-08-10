@@ -1,16 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
-import { pipeline } from '@xenova/transformers'
-
-// Initialisation du modèle d'embeddings (gte-small) en singleton
-let extractor = null
-async function getExtractor() {
-  if (!extractor) {
-    extractor = await pipeline('feature-extraction', 'Xenova/gte-small')
-  }
-  return extractor
-}
+import { getEmbedding } from '@/utils/embeddings'
 
 // Fonction utilitaire de découpage de texte (chunking)
 function splitIntoChunks(text, chunkSize = 500, overlap = 100) {
@@ -113,15 +104,12 @@ export async function POST(req) {
     // 6. Découpage en morceaux (Chunks)
     const chunks = splitIntoChunks(extractedText, 500, 100)
 
-    // 7. Génération des embeddings et insertion en base de données
-    const extract = await getExtractor()
-
+    // 7. Génération des embeddings via API distante et insertion en base de données
     for (let i = 0; i < chunks.length; i++) {
       const chunkText = chunks[i]
       
-      // Générer le vecteur d'embedding gte-small (384 dimensions)
-      const output = await extract(chunkText, { pooling: 'mean', normalize: true })
-      const embedding = Array.from(output.data)
+      // Générer le vecteur d'embedding gte-small (384 dimensions) via Hugging Face API
+      const embedding = await getEmbedding(chunkText)
 
       // Insertion via adminClient (service_role) pour contourner le RLS
       const { error: insertError } = await adminClient
