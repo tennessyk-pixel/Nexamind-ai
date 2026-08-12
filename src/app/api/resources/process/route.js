@@ -9,9 +9,7 @@ const openrouter = createOpenAI({
   compatibility: 'compatible',
 })
 
-let envModel = process.env.NEXT_PUBLIC_AI_MODEL
-if (envModel === 'google/gemma-4-26b-a4b-it:free') envModel = null // Ignore old bad model
-const modelName = envModel || 'google/gemma-2-9b-it:free'
+const modelName = process.env.NEXT_PUBLIC_AI_MODEL
 
 export async function POST(req) {
   try {
@@ -40,21 +38,10 @@ export async function POST(req) {
       .eq('id', resourceId)
       .single()
 
+    // RLS (resource_select_own / resource_select_ready) autorise déjà la lecture :
+    // une ressource récupérée ici est une ressource que l'utilisateur a le droit de lire.
     if (fetchError || !resource) {
       return NextResponse.json({ error: 'Ressource introuvable' }, { status: 404 })
-    }
-
-    // Sécurité RLS au niveau applicatif
-    if (resource.user_id !== user.id) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-      
-      if (profile?.role !== 'admin') {
-        return NextResponse.json({ error: 'Non autorisé à lire ce document' }, { status: 403 })
-      }
     }
 
     if (!resource.raw_content || !resource.raw_content.trim()) {
