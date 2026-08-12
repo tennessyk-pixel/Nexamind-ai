@@ -1,19 +1,12 @@
-import { createOpenAI } from '@ai-sdk/openai'
 import { streamText } from 'ai'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
 import { getEmbedding } from '@/utils/embeddings'
+import { openrouter, primaryModel as modelName } from '@/utils/openrouter'
 
 // La réponse est streamée : la fonction reste ouverte pendant toute la
 // génération, qui peut dépasser les 10 s par défaut sur une réponse longue.
 export const maxDuration = 60
-
-// Configuration de OpenRouter en utilisant le SDK OpenAI natif
-const openrouter = createOpenAI({
-  baseURL: 'https://openrouter.ai/api/v1',
-  apiKey: process.env.OPENROUTER_API_KEY,
-  compatibility: 'compatible',
-})
 
 export async function POST(req) {
   try {
@@ -102,7 +95,6 @@ export async function POST(req) {
     }
 
     // BUG-04 FIX : Utiliser la variable d'env pour le modèle
-    const modelName = process.env.NEXT_PUBLIC_AI_MODEL || 'meta-llama/llama-3.3-70b-instruct:free'
     console.log('Model:', modelName)
     const model = openrouter(modelName)
 

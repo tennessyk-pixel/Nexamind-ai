@@ -32,3 +32,6 @@ Thumbs.db
 dev-server.log
 prod-server.log
 deno.lock
+
+.vercel
+.env*
