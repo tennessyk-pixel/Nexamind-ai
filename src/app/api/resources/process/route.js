@@ -3,6 +3,10 @@ import { createClient } from '@/utils/supabase/server'
 import { createOpenAI } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 
+// La génération de résumé prend ~40 s sur un document long. Sans cette valeur,
+// les hébergeurs serverless coupent la requête à 10 s (défaut Vercel Hobby).
+export const maxDuration = 60
+
 const openrouter = createOpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPENROUTER_API_KEY,

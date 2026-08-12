@@ -3,6 +3,10 @@ import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
 import { getEmbedding } from '@/utils/embeddings'
 
+// L'indexation enchaîne extraction du texte, découpage et un appel d'embedding
+// par chunk : un document long dépasse largement les 10 s par défaut.
+export const maxDuration = 60
+
 // Fonction utilitaire de découpage de texte (chunking)
 function splitIntoChunks(text, chunkSize = 500, overlap = 100) {
   const chunks = []

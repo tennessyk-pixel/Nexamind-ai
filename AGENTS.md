@@ -22,8 +22,12 @@ Ce dépôt est un projet de diplôme avec soutenance. En cas d'arbitrage, choisi
 
 - **Conserver `next build --webpack`.** Turbopack produit une sortie que les adaptateurs d'hébergement ne savent pas traiter.
 
+- **Ne pas retirer les `export const maxDuration = 60`** des routes `api/chat`, `api/ingest` et `api/resources/process`. Sans eux, un hébergeur serverless coupe la requête à 10 s, alors que la génération de résumé prend ~40 s.
+
 ## Hébergement
 
-Netlify est une impasse pour ce projet : `@netlify/plugin-nextjs` ne sait pas empaqueter le middleware de Next.js 16, et les fonctions serverless coupent vers 10 s alors que la génération de résumé prend ~40 s.
+**Cible : Vercel.** Next.js 16 et son middleware (`proxy.js`) y sont supportés nativement, sans adaptateur. Aucune configuration n'est nécessaire, le framework est détecté automatiquement — seules les 5 variables d'environnement sont à saisir.
 
-La cible est **Render** (voir `render.yaml`), qui exécute l'application comme un serveur Node classique : middleware natif, aucune limite de durée. Les secrets ne sont jamais commités — ils se saisissent dans le tableau de bord Render.
+**Netlify est une impasse** : `@netlify/plugin-nextjs` (5.15.13, dernière version) échoue à empaqueter le middleware de Next.js 16 (`Cannot find module './webpack-runtime.js'`). Le seul build qui a réussi l'a été parce que `proxy.js` avait été supprimé, au prix de la protection des routes. Ne pas retenter ce déploiement.
+
+`render.yaml` est conservé comme repli : Render exécute l'application comme un serveur Node classique, sans aucune limite de durée. Les secrets ne sont jamais commités, quel que soit l'hébergeur.

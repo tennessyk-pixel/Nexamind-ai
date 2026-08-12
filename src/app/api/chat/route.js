@@ -4,6 +4,10 @@ import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
 import { getEmbedding } from '@/utils/embeddings'
 
+// La réponse est streamée : la fonction reste ouverte pendant toute la
+// génération, qui peut dépasser les 10 s par défaut sur une réponse longue.
+export const maxDuration = 60
+
 // Configuration de OpenRouter en utilisant le SDK OpenAI natif
 const openrouter = createOpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
