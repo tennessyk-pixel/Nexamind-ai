@@ -1,0 +1,33 @@
+# Configuration de déploiement Render.
+#
+# Render exécute l'application comme un serveur Node classique (`next start`),
+# sans adaptateur serverless. Le middleware (proxy.js) fonctionne donc nativement,
+# et les traitements longs (résumé de document, ~40 s) ne sont pas coupés par
+# une limite de durée d'exécution, contrairement aux fonctions serverless.
+#
+# Les secrets sont marqués `sync: false` : ils ne sont PAS stockés dans le dépôt,
+# ils se saisissent dans le tableau de bord Render à la création du service.
+
+services:
+  - type: web
+    name: nexamind-ai
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /login
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NEXT_PUBLIC_AI_MODEL
+        value: google/gemma-4-26b-a4b-it:free
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false

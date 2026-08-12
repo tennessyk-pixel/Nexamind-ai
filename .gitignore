@@ -30,3 +30,5 @@ Thumbs.db
 # Local Netlify folder
 .netlify
 dev-server.log
+prod-server.log
+deno.lock
