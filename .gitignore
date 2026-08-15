@@ -35,3 +35,6 @@ deno.lock
 
 .vercel
 .env*
+
+# Fichiers de travail des agents (notes internes, diffs)
+.working/
