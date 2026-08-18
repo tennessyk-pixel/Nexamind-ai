@@ -1,0 +1,1418 @@
+{
+  "date": "2026-08-18T10:18:42.603Z",
+  "modele": "google/gemma-4-26b-a4b-it:free",
+  "seuil": 0.3,
+  "nb_extraits": 5,
+  "resultats": [
+    {
+      "id": "Q01",
+      "question": "Combien de jours de télétravail par semaine ?",
+      "categorie": "fait simple",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Politique de teletravail",
+        "Conges et absences",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.908178752173261,
+      "elements_attendus": [
+        "trois jours"
+      ],
+      "elements_presents": [
+        "trois jours"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Chaque collaborateur peut télétravailler jusqu'à trois jours par semaine [Document 1].\n\nToutefois, des exceptions s'appliquent :\n*   Les alternants et les collaborateurs en période d'essai sont limités à un jour par semaine pendant les trois premiers mois [Document 1].\n*   Le mardi est une journée de présence obligatoire sur site pour l'ensemble des équipes [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 443,
+        "recherche": 115,
+        "generation": 12592,
+        "total": 13150
+      },
+      "jetons": {
+        "prompt_tokens": 715,
+        "completion_tokens": 90,
+        "total_tokens": 805,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0000363,
+          "upstream_inference_prompt_cost": 0.00002145,
+          "upstream_inference_completions_cost": 0.00001485
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q02",
+      "question": "Quel jour la présence sur site est-elle obligatoire ?",
+      "categorie": "fait simple",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Glossaire",
+        "Politique de teletravail",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 3,
+      "meilleure_similarite": 0.86328848789002,
+      "elements_attendus": [
+        "mardi"
+      ],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Je ne peux pas répondre à cette question car les documents fournis ne mentionnent pas de jour spécifique où la présence sur site est obligatoire.",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 316,
+        "recherche": 99,
+        "generation": 3025,
+        "total": 3441
+      },
+      "jetons": {
+        "prompt_tokens": 655,
+        "completion_tokens": 28,
+        "total_tokens": 683,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002427,
+          "upstream_inference_prompt_cost": 0.00001965,
+          "upstream_inference_completions_cost": 0.00000462
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q03",
+      "question": "Quel est le montant de l'indemnité pour la connexion internet ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Politique de teletravail",
+        "Charte securite informatique"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.861745766505348,
+      "elements_attendus": [
+        "20"
+      ],
+      "elements_presents": [
+        "20"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "L'indemnité forfaitaire pour la connexion internet est de 20 euros par mois [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 201,
+        "recherche": 49,
+        "generation": 2936,
+        "total": 3185
+      },
+      "jetons": {
+        "prompt_tokens": 687,
+        "completion_tokens": 25,
+        "total_tokens": 712,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000024735,
+          "upstream_inference_prompt_cost": 0.00002061,
+          "upstream_inference_completions_cost": 0.000004125
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q04",
+      "question": "Quel est le plafond pour un repas de midi en déplacement ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Note de frais - procedure",
+        "Processus commercial et devis",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.876870863251143,
+      "elements_attendus": [
+        "19"
+      ],
+      "elements_presents": [
+        "19"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le repas de midi en déplacement est plafonné à 19 euros [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 203,
+        "recherche": 51,
+        "generation": 4651,
+        "total": 4905
+      },
+      "jetons": {
+        "prompt_tokens": 712,
+        "completion_tokens": 21,
+        "total_tokens": 733,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000024825,
+          "upstream_inference_prompt_cost": 0.00002136,
+          "upstream_inference_completions_cost": 0.000003465
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q05",
+      "question": "Avant quelle date faut-il soumettre une note de frais ?",
+      "categorie": "fait simple",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Note de frais - procedure",
+        "Procédure de facturation client",
+        "Politique de teletravail",
+        "Processus commercial et devis"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.914567763481605,
+      "elements_attendus": [
+        "5"
+      ],
+      "elements_presents": [
+        "5"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les notes de frais doivent être soumises avant le 5 du mois suivant la dépense [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 267,
+        "recherche": 52,
+        "generation": 9508,
+        "total": 9826
+      },
+      "jetons": {
+        "prompt_tokens": 582,
+        "completion_tokens": 25,
+        "total_tokens": 607,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000021585,
+          "upstream_inference_prompt_cost": 0.00001746,
+          "upstream_inference_completions_cost": 0.000004125
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q06",
+      "question": "Quel est le plafond d'hébergement en Île-de-France ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Note de frais - procedure",
+        "Reglement interieur - vie quotidienne",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.89760478415532,
+      "elements_attendus": [
+        "130"
+      ],
+      "elements_presents": [
+        "130"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le plafond d'hébergement en Île-de-France est de 130 euros par nuit [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 440,
+        "recherche": 97,
+        "generation": 2846,
+        "total": 3382
+      },
+      "jetons": {
+        "prompt_tokens": 754,
+        "completion_tokens": 28,
+        "total_tokens": 782,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002724,
+          "upstream_inference_prompt_cost": 0.00002262,
+          "upstream_inference_completions_cost": 0.00000462
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q07",
+      "question": "Combien de jours de congés payés par an ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Processus commercial et devis"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.917565882205963,
+      "elements_attendus": [
+        "25"
+      ],
+      "elements_presents": [
+        "25"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Chaque collaborateur acqu homomorphism 25 jours ouvrés de congés хочуés par an [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 348,
+        "recherche": 101,
+        "generation": 2024,
+        "total": 2473
+      },
+      "jetons": {
+        "prompt_tokens": 797,
+        "completion_tokens": 25,
+        "total_tokens": 822,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000028035,
+          "upstream_inference_prompt_cost": 0.00002391,
+          "upstream_inference_completions_cost": 0.000004125
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q08",
+      "question": "Combien de jours d'absence pour un mariage ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Reglement interieur - vie quotidienne",
+        "Processus commercial et devis"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.871647969287882,
+      "elements_attendus": [
+        "4"
+      ],
+      "elements_presents": [
+        "4"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le mariage ou le PACS ouvre droit à 4 jours [Document 1] [Document 4].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 304,
+        "recherche": 51,
+        "generation": 5296,
+        "total": 5651
+      },
+      "jetons": {
+        "prompt_tokens": 677,
+        "completion_tokens": 22,
+        "total_tokens": 699,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002394,
+          "upstream_inference_prompt_cost": 0.00002031,
+          "upstream_inference_completions_cost": 0.00000363
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q09",
+      "question": "Avant quelle date faut-il poser ses congés d'été ?",
+      "categorie": "fait simple",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Reglement interieur - vie quotidienne",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.869583990263462,
+      "elements_attendus": [
+        "31 mars"
+      ],
+      "elements_presents": [
+        "31 mars"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les congés d'été doivent être posés avant le 31 mars [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 302,
+        "recherche": 104,
+        "generation": 2809,
+        "total": 3215
+      },
+      "jetons": {
+        "prompt_tokens": 676,
+        "completion_tokens": 22,
+        "total_tokens": 698,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002391,
+          "upstream_inference_prompt_cost": 0.00002028,
+          "upstream_inference_completions_cost": 0.00000363
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q10",
+      "question": "Quelle est la longueur minimale d'un mot de passe ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Charte securite informatique",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Conges et absences",
+        "Glossaire",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.89038690597972,
+      "elements_attendus": [
+        "12"
+      ],
+      "elements_presents": [
+        "12"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "La longueur minimale d'un mot de passe est de 12 caractères [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 309,
+        "recherche": 157,
+        "generation": 2198,
+        "total": 2664
+      },
+      "jetons": {
+        "prompt_tokens": 707,
+        "completion_tokens": 21,
+        "total_tokens": 728,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000024675,
+          "upstream_inference_prompt_cost": 0.00002121,
+          "upstream_inference_completions_cost": 0.000003465
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q11",
+      "question": "Que faire si je reçois un e-mail suspect ?",
+      "categorie": "procédure",
+      "document_attendu": "Charte securite informatique",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Glossaire",
+        "Procédure de facturation client"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.868793078136858,
+      "elements_attendus": [
+        "signaler"
+      ],
+      "elements_presents": [
+        "signaler"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Si vous recevez un e-mail suspect (mentionné sous le terme \"hameçonnage\"), vous devez suivre les consignes suivantes :\n\n*   **Signalement :** Tout message demandant un virement urgent, un changement de coordonnées bancaires ou une saisie d'identifiants doit être signalé au service informatique sans y répondre [Document 2] [Document 4].\n*   **Vérification :** En cas de doute sur l'expéditeur, la vérification doit se faire par un canal différent, par exemple via un appel téléphonique au numéro connu, et jamais en utilisant le numéro indiqué dans le message [Document 2].\n*   **Action immédiate :** Si vous avez cliqué sur un lien suspect, vous devez le signaler immédiatement [Document 1] [Document 2].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 391,
+        "recherche": 101,
+        "generation": 3634,
+        "total": 4126
+      },
+      "jetons": {
+        "prompt_tokens": 602,
+        "completion_tokens": 169,
+        "total_tokens": 771,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000045945,
+          "upstream_inference_prompt_cost": 0.00001806,
+          "upstream_inference_completions_cost": 0.000027885
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q12",
+      "question": "Combien de temps les données clients sont-elles conservées ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Charte securite informatique",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Procédure de facturation client",
+        "Reglement interieur - vie quotidienne",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.901458686503252,
+      "elements_attendus": [
+        "3 ans"
+      ],
+      "elements_presents": [
+        "3 ans"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les documents contenant des données personnelles sont conservés 3 ans après la fin de la relation commerciale, puis supprimés automatiquement [Document 1, Document 3].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 221,
+        "recherche": 56,
+        "generation": 3255,
+        "total": 3532
+      },
+      "jetons": {
+        "prompt_tokens": 555,
+        "completion_tokens": 34,
+        "total_tokens": 589,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002226,
+          "upstream_inference_prompt_cost": 0.00001665,
+          "upstream_inference_completions_cost": 0.00000561
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q13",
+      "question": "Qui valide un devis de 30 000 euros ?",
+      "categorie": "raisonnement sur seuil",
+      "document_attendu": "Processus commercial et devis",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Compte rendu — Client Atlas, Q2",
+        "Procédure de facturation client"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.922618503726633,
+      "elements_attendus": [
+        "directeur commercial"
+      ],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "",
+      "erreur": "Provider returned error",
+      "latences_ms": {
+        "embedding": 246,
+        "recherche": 57,
+        "generation": 275,
+        "total": 578
+      },
+      "jetons": null,
+      "modele_utilise": null
+    },
+    {
+      "id": "Q14",
+      "question": "Quelle est la durée de validité d'un devis ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Processus commercial et devis",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Compte rendu — Client Atlas, Q2",
+        "Note de frais - procedure",
+        "Procédure de facturation client"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.902333724776957,
+      "elements_attendus": [
+        "30 jours"
+      ],
+      "elements_presents": [
+        "30 jours"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Un devis est valable 30 jours à compter de sa date d'émission [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 285,
+        "recherche": 56,
+        "generation": 1562,
+        "total": 1903
+      },
+      "jetons": {
+        "prompt_tokens": 526,
+        "completion_tokens": 23,
+        "total_tokens": 549,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000019575,
+          "upstream_inference_prompt_cost": 0.00001578,
+          "upstream_inference_completions_cost": 0.000003795
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q15",
+      "question": "Quelle remise commerciale maximale sans justification ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Processus commercial et devis",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.889300107955933,
+      "elements_attendus": [
+        "10"
+      ],
+      "elements_presents": [
+        "10"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "La remise commerciale standard ne peut excéder 10 % sans justification écrite [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 204,
+        "recherche": 99,
+        "generation": 3486,
+        "total": 3789
+      },
+      "jetons": {
+        "prompt_tokens": 778,
+        "completion_tokens": 21,
+        "total_tokens": 799,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000026805,
+          "upstream_inference_prompt_cost": 0.00002334,
+          "upstream_inference_completions_cost": 0.000003465
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q16",
+      "question": "Combien de temps dure une réunion par défaut ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Reglement interieur - vie quotidienne",
+      "documents_trouves": [
+        "Reglement interieur - vie quotidienne",
+        "Processus commercial et devis",
+        "FAQ onboarding nouveaux arrivants"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.912528276443481,
+      "elements_attendus": [
+        "25",
+        "50"
+      ],
+      "elements_presents": [
+        "25",
+        "50"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Par défaut, les réunions durent 25 ou 50 minutes [Document 1], [Document 3].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 241,
+        "recherche": 52,
+        "generation": 1071,
+        "total": 1364
+      },
+      "jetons": {
+        "prompt_tokens": 531,
+        "completion_tokens": 26,
+        "total_tokens": 557,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q17",
+      "question": "Quand le réfrigérateur est-il vidé ?",
+      "categorie": "fait simple",
+      "document_attendu": "Reglement interieur - vie quotidienne",
+      "documents_trouves": [
+        "Reglement interieur - vie quotidienne",
+        "Processus commercial et devis",
+        "Charte securite informatique",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.862840958664362,
+      "elements_attendus": [
+        "vendredi"
+      ],
+      "elements_presents": [
+        "vendredi"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le réfrigérateur est vidé tous les vendredis à 18h, sans exception [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 207,
+        "recherche": 59,
+        "generation": 2859,
+        "total": 3125
+      },
+      "jetons": {
+        "prompt_tokens": 708,
+        "completion_tokens": 23,
+        "total_tokens": 731,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000025035,
+          "upstream_inference_prompt_cost": 0.00002124,
+          "upstream_inference_completions_cost": 0.000003795
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q18",
+      "question": "Quelle est la procédure de facturation client ?",
+      "categorie": "procédure",
+      "document_attendu": "Procédure de facturation client",
+      "documents_trouves": [
+        "Procédure de facturation client",
+        "Note de frais - procedure",
+        "Charte securite informatique"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.91970761892566,
+      "elements_attendus": [
+        "devis",
+        "48"
+      ],
+      "elements_presents": [
+        "devis",
+        "48"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Pour facturer un client, la procédure est la suivante :\n\n1. Ouvrir le dossier projet et vérifier le devis signé [Document 1].\n2. Générer la facture dans l'outil comptable [Document 2].\n3. Envoyer la facture au client sous 48h [Document 2].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 268,
+        "recherche": 56,
+        "generation": 4309,
+        "total": 4634
+      },
+      "jetons": {
+        "prompt_tokens": 491,
+        "completion_tokens": 69,
+        "total_tokens": 560,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000026115,
+          "upstream_inference_prompt_cost": 0.00001473,
+          "upstream_inference_completions_cost": 0.000011385
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q19",
+      "question": "Où trouver le modèle de compte rendu ?",
+      "categorie": "fait simple",
+      "document_attendu": "FAQ onboarding nouveaux arrivants",
+      "documents_trouves": [
+        "FAQ onboarding nouveaux arrivants",
+        "Processus commercial et devis",
+        "Note de frais - procedure",
+        "Glossaire",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.942160185704244,
+      "elements_attendus": [
+        "Templates"
+      ],
+      "elements_presents": [
+        "Templates"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le modèle de compte rendu se trouve dans Templates > CR_reunion [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 317,
+        "recherche": 96,
+        "generation": 6498,
+        "total": 6912
+      },
+      "jetons": {
+        "prompt_tokens": 658,
+        "completion_tokens": 20,
+        "total_tokens": 678,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002304,
+          "upstream_inference_prompt_cost": 0.00001974,
+          "upstream_inference_completions_cost": 0.0000033
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q20",
+      "question": "Quelles décisions ont été prises lors de la réunion Atlas ?",
+      "categorie": "synthèse",
+      "document_attendu": "Compte rendu — Client Atlas, Q2",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Reglement interieur - vie quotidienne",
+        "FAQ onboarding nouveaux arrivants",
+        "Compte rendu — Client Atlas, Q2"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 5,
+      "meilleure_similarite": 0.879033029079437,
+      "elements_attendus": [
+        "report",
+        "budget"
+      ],
+      "elements_presents": [
+        "report",
+        "budget"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Lors de la réunion Atlas, les décisions suivantes ont été prises :\n*   Le report du livrable de 2 semaines [Document 5].\n*   La validation du budget additionnel [Document 5].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 272,
+        "recherche": 73,
+        "generation": 1828,
+        "total": 2172
+      },
+      "jetons": {
+        "prompt_tokens": 492,
+        "completion_tokens": 45,
+        "total_tokens": 537,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000022185,
+          "upstream_inference_prompt_cost": 0.00001476,
+          "upstream_inference_completions_cost": 0.000007425
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q21",
+      "question": "Un alternant peut-il télétravailler trois jours dès son arrivée ?",
+      "categorie": "raisonnement sur exception",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Politique de teletravail",
+        "Charte securite informatique",
+        "Conges et absences"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.892429232597357,
+      "elements_attendus": [
+        "un jour",
+        "trois mois"
+      ],
+      "elements_presents": [
+        "un jour"
+      ],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Non, un alternant ne peut pas télétravailler trois jours dès son arrivée. Les alternants sont limités à un jour par semaine pendant les trois premiers mois, le temps de l'intégration [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 193,
+        "recherche": 48,
+        "generation": 6217,
+        "total": 6458
+      },
+      "jetons": {
+        "prompt_tokens": 738,
+        "completion_tokens": 47,
+        "total_tokens": 785,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000029895,
+          "upstream_inference_prompt_cost": 0.00002214,
+          "upstream_inference_completions_cost": 0.000007755
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q22",
+      "question": "Puis-je me faire rembourser une amende de stationnement ?",
+      "categorie": "raisonnement négatif",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Charte securite informatique",
+        "Compte rendu — Client Atlas, Q2"
+      ],
+      "bon_document_trouve": false,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.873404733741567,
+      "elements_attendus": [
+        "jamais",
+        "amende"
+      ],
+      "elements_presents": [
+        "amende"
+      ],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "Désolé, je ne peux pas répondre à cette question car les documents fournis ne contiennent aucune information concernant le remboursement d'amendes de stationnement.",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 267,
+        "recherche": 54,
+        "generation": 7016,
+        "total": 7337
+      },
+      "jetons": {
+        "prompt_tokens": 512,
+        "completion_tokens": 32,
+        "total_tokens": 544,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002064,
+          "upstream_inference_prompt_cost": 0.00001536,
+          "upstream_inference_completions_cost": 0.00000528
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q23",
+      "question": "Combien de jours de RTT sont reportables ?",
+      "categorie": "raisonnement négatif",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Charte securite informatique",
+        "Compte rendu — Client Atlas, Q2",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.896039048191404,
+      "elements_attendus": [
+        "pas reportables"
+      ],
+      "elements_presents": [
+        "pas reportables"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les RTT ne sont pas reportables et doivent être soldés au 31 décembre [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 417,
+        "recherche": 97,
+        "generation": 1542,
+        "total": 2057
+      },
+      "jetons": {
+        "prompt_tokens": 621,
+        "completion_tokens": 24,
+        "total_tokens": 645,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002259,
+          "upstream_inference_prompt_cost": 0.00001863,
+          "upstream_inference_completions_cost": 0.00000396
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q24",
+      "question": "Quelle est la politique de remboursement des frais de crèche ?",
+      "categorie": "hors-corpus",
+      "document_attendu": null,
+      "documents_trouves": [
+        "Conges et absences",
+        "Processus commercial et devis",
+        "Politique de teletravail",
+        "FAQ onboarding nouveaux arrivants",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": null,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.845667396614946,
+      "elements_attendus": [],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "L'information concernant la politique de remboursement des frais de crèche ne figure pas dans les documents fournis.",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 200,
+        "recherche": 56,
+        "generation": 1179,
+        "total": 1435
+      },
+      "jetons": {
+        "prompt_tokens": 574,
+        "completion_tokens": 22,
+        "total_tokens": 596,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00002085,
+          "upstream_inference_prompt_cost": 0.00001722,
+          "upstream_inference_completions_cost": 0.00000363
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q25",
+      "question": "Quel est le montant de la prime de fin d'année ?",
+      "categorie": "hors-corpus",
+      "document_attendu": null,
+      "documents_trouves": [
+        "Glossaire",
+        "Processus commercial et devis",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": null,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.840533921686787,
+      "elements_attendus": [],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "L'information concernant le montant de la prime de fin d'année ne figure pas dans les documents fournis.",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 223,
+        "recherche": 86,
+        "generation": 2399,
+        "total": 2708
+      },
+      "jetons": {
+        "prompt_tokens": 686,
+        "completion_tokens": 23,
+        "total_tokens": 709,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000024375,
+          "upstream_inference_prompt_cost": 0.00002058,
+          "upstream_inference_completions_cost": 0.000003795
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    },
+    {
+      "id": "Q26",
+      "question": "Quelle est la capitale de l'Australie ?",
+      "categorie": "hors-domaine",
+      "document_attendu": null,
+      "documents_trouves": [
+        "Procédure de facturation client",
+        "Glossaire",
+        "Processus commercial et devis",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": null,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.8166015063587,
+      "elements_attendus": [],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "Je suis désolé, mais je ne peux pas répondre à cette question car l'information ne figure pas dans les documents fournis.",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 317,
+        "recherche": 89,
+        "generation": 3561,
+        "total": 3966
+      },
+      "jetons": {
+        "prompt_tokens": 653,
+        "completion_tokens": 27,
+        "total_tokens": 680,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000024045,
+          "upstream_inference_prompt_cost": 0.00001959,
+          "upstream_inference_completions_cost": 0.000004455
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "google/gemma-4-26b-a4b-it:free"
+    }
+  ]
+}

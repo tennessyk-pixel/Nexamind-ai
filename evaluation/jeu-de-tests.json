@@ -1,0 +1,193 @@
+{
+  "version": "1.0",
+  "date": "2026-08-15",
+  "corpus": "NexaWorks — 10 documents internes",
+  "note": "Chaque cas indique le document qui contient la réponse et les éléments factuels attendus. Les cas 'hors-corpus' vérifient que l'assistant refuse d'inventer.",
+  "cas": [
+    {
+      "id": "Q01",
+      "question": "Combien de jours de télétravail par semaine ?",
+      "document_attendu": "Politique de teletravail",
+      "elements_attendus": ["trois jours"],
+      "categorie": "fait simple"
+    },
+    {
+      "id": "Q02",
+      "question": "Quel jour la présence sur site est-elle obligatoire ?",
+      "document_attendu": "Politique de teletravail",
+      "elements_attendus": ["mardi"],
+      "categorie": "fait simple"
+    },
+    {
+      "id": "Q03",
+      "question": "Quel est le montant de l'indemnité pour la connexion internet ?",
+      "document_attendu": "Politique de teletravail",
+      "elements_attendus": ["20"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q04",
+      "question": "Quel est le plafond pour un repas de midi en déplacement ?",
+      "document_attendu": "Note de frais - procedure",
+      "elements_attendus": ["19"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q05",
+      "question": "Avant quelle date faut-il soumettre une note de frais ?",
+      "document_attendu": "Note de frais - procedure",
+      "elements_attendus": ["5"],
+      "categorie": "fait simple"
+    },
+    {
+      "id": "Q06",
+      "question": "Quel est le plafond d'hébergement en Île-de-France ?",
+      "document_attendu": "Note de frais - procedure",
+      "elements_attendus": ["130"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q07",
+      "question": "Combien de jours de congés payés par an ?",
+      "document_attendu": "Conges et absences",
+      "elements_attendus": ["25"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q08",
+      "question": "Combien de jours d'absence pour un mariage ?",
+      "document_attendu": "Conges et absences",
+      "elements_attendus": ["4"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q09",
+      "question": "Avant quelle date faut-il poser ses congés d'été ?",
+      "document_attendu": "Conges et absences",
+      "elements_attendus": ["31 mars"],
+      "categorie": "fait simple"
+    },
+    {
+      "id": "Q10",
+      "question": "Quelle est la longueur minimale d'un mot de passe ?",
+      "document_attendu": "Charte securite informatique",
+      "elements_attendus": ["12"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q11",
+      "question": "Que faire si je reçois un e-mail suspect ?",
+      "document_attendu": "Charte securite informatique",
+      "elements_attendus": ["signaler"],
+      "categorie": "procédure"
+    },
+    {
+      "id": "Q12",
+      "question": "Combien de temps les données clients sont-elles conservées ?",
+      "document_attendu": "Charte securite informatique",
+      "elements_attendus": ["3 ans"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q13",
+      "question": "Qui valide un devis de 30 000 euros ?",
+      "document_attendu": "Processus commercial et devis",
+      "elements_attendus": ["directeur commercial"],
+      "categorie": "raisonnement sur seuil"
+    },
+    {
+      "id": "Q14",
+      "question": "Quelle est la durée de validité d'un devis ?",
+      "document_attendu": "Processus commercial et devis",
+      "elements_attendus": ["30 jours"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q15",
+      "question": "Quelle remise commerciale maximale sans justification ?",
+      "document_attendu": "Processus commercial et devis",
+      "elements_attendus": ["10"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q16",
+      "question": "Combien de temps dure une réunion par défaut ?",
+      "document_attendu": "Reglement interieur - vie quotidienne",
+      "elements_attendus": ["25", "50"],
+      "categorie": "fait chiffré"
+    },
+    {
+      "id": "Q17",
+      "question": "Quand le réfrigérateur est-il vidé ?",
+      "document_attendu": "Reglement interieur - vie quotidienne",
+      "elements_attendus": ["vendredi"],
+      "categorie": "fait simple"
+    },
+    {
+      "id": "Q18",
+      "question": "Quelle est la procédure de facturation client ?",
+      "document_attendu": "Procédure de facturation client",
+      "elements_attendus": ["devis", "48"],
+      "categorie": "procédure"
+    },
+    {
+      "id": "Q19",
+      "question": "Où trouver le modèle de compte rendu ?",
+      "document_attendu": "FAQ onboarding nouveaux arrivants",
+      "elements_attendus": ["Templates"],
+      "categorie": "fait simple"
+    },
+    {
+      "id": "Q20",
+      "question": "Quelles décisions ont été prises lors de la réunion Atlas ?",
+      "document_attendu": "Compte rendu — Client Atlas, Q2",
+      "elements_attendus": ["report", "budget"],
+      "categorie": "synthèse"
+    },
+    {
+      "id": "Q21",
+      "question": "Un alternant peut-il télétravailler trois jours dès son arrivée ?",
+      "document_attendu": "Politique de teletravail",
+      "elements_attendus": ["un jour", "trois mois"],
+      "categorie": "raisonnement sur exception"
+    },
+    {
+      "id": "Q22",
+      "question": "Puis-je me faire rembourser une amende de stationnement ?",
+      "document_attendu": "Note de frais - procedure",
+      "elements_attendus": ["jamais", "amende"],
+      "categorie": "raisonnement négatif"
+    },
+    {
+      "id": "Q23",
+      "question": "Combien de jours de RTT sont reportables ?",
+      "document_attendu": "Conges et absences",
+      "elements_attendus": ["pas reportables"],
+      "categorie": "raisonnement négatif"
+    },
+    {
+      "id": "Q24",
+      "question": "Quelle est la politique de remboursement des frais de crèche ?",
+      "document_attendu": null,
+      "elements_attendus": [],
+      "categorie": "hors-corpus",
+      "comportement_attendu": "L'assistant doit indiquer qu'il ne trouve pas l'information plutôt que d'inventer."
+    },
+    {
+      "id": "Q25",
+      "question": "Quel est le montant de la prime de fin d'année ?",
+      "document_attendu": null,
+      "elements_attendus": [],
+      "categorie": "hors-corpus",
+      "comportement_attendu": "L'assistant doit indiquer qu'il ne trouve pas l'information plutôt que d'inventer."
+    },
+    {
+      "id": "Q26",
+      "question": "Quelle est la capitale de l'Australie ?",
+      "document_attendu": null,
+      "elements_attendus": [],
+      "categorie": "hors-domaine",
+      "comportement_attendu": "L'assistant doit refuser de répondre hors du périmètre documentaire, même s'il connaît la réponse."
+    }
+  ]
+}

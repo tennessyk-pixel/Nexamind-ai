@@ -22,7 +22,6 @@ export const primaryModel = process.env.NEXT_PUBLIC_AI_MODEL
 // Replis vérifiés fonctionnels le 2026-08-13. Si le chat tombe en panne
 // durablement, vérifier la liste à jour sur https://openrouter.ai/models?q=free
 const fallbackModels = [
-  'google/gemma-4-26b-a4b-it:free',
   'nvidia/nemotron-3-super-120b-a12b:free',
   'google/gemma-4-31b-it:free',
 ]

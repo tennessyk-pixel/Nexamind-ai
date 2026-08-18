@@ -1,0 +1,1436 @@
+{
+  "date": "2026-08-18T10:15:35.005Z",
+  "modele": "nvidia/nemotron-3-super-120b-a12b:free",
+  "seuil": 0.3,
+  "nb_extraits": 5,
+  "resultats": [
+    {
+      "id": "Q01",
+      "question": "Combien de jours de télétravail par semaine ?",
+      "categorie": "fait simple",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Politique de teletravail",
+        "Conges et absences",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.908178752173261,
+      "elements_attendus": [
+        "trois jours"
+      ],
+      "elements_presents": [
+        "trois jours"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Chaque collaborateur peut télétravailler jusqu'à trois jours par semaine, selon la politique de télétravail de NexaWorks [Document 1]. Précision importante : le m",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 400,
+        "recherche": 835,
+        "generation": 7074,
+        "total": 8309
+      },
+      "jetons": {
+        "prompt_tokens": 714,
+        "completion_tokens": 400,
+        "total_tokens": 1114,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 404,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q02",
+      "question": "Quel jour la présence sur site est-elle obligatoire ?",
+      "categorie": "fait simple",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Glossaire",
+        "Politique de teletravail",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 3,
+      "meilleure_similarite": 0.86328848789002,
+      "elements_attendus": [
+        "mardi"
+      ],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "We need to answer: \"Quel jour la présence sur site est obligatoire ?\" We must answer based on provided documents only, citing sources.\n\nCheck documents: Document 1: charter security informatique, mentions password reuse, double auth, phishing. Not relevant.\n\nDocument 2: glossaire: terms like Backlog, User Flow, Happy Path. No presence.\n\nDocument 3: Politique de teletravail. Let's read: [Document 3] (Politique de teletravail)\nsite, formation, ou pic d'activité. ## Équipement et frais ... It might contain info about required presence days.\n\nWe need to find in Document 3 any mention of mandatory presence day. The excerpt: \"site, formation, ou pic d'activité.\" Might be part of a bullet: presence on site required for site, formation, or pic d'activité. Possibly something like: \"La présence sur site est obligatoire les jours de formation, de pic d'activité, ou lorsqu'un site ...\"? Let's see more fully: The snippet shows: \"site, formation, ou pic d'activité.\" Could be after \"Les jours de présence sur site sont requis pour: site, formation, ou pic d'activité.\" Not clear.\n\nWe need to answer with which day presence on site is mandatory. Possibly Monday? But we need to rely on document text. Let's examine Document 3 more carefully: It says: \"## Équipement et frais NexaWorks fournit un ordinateur portable et un casque audio à chaque collaborateur. Un second écran peut être demandé auprès du service informatique après six mois d'ancienneté. Une indemnité forfaitaire de 20 euros par mois couvre la connexion internet. Elle est versée automatiquement avec le salaire, sans justificatif à fournir, dès lors qu'au moins un jour de télétravail est effectué dans le mois. ## Conditions de travail Le collaborateur\"\n\nThus, presence requirement",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 311,
+        "recherche": 112,
+        "generation": 7209,
+        "total": 7632
+      },
+      "jetons": {
+        "prompt_tokens": 654,
+        "completion_tokens": 400,
+        "total_tokens": 1054,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 447,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q03",
+      "question": "Quel est le montant de l'indemnité pour la connexion internet ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Politique de teletravail",
+        "Charte securite informatique"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.861745766505348,
+      "elements_attendus": [
+        "20"
+      ],
+      "elements_presents": [
+        "20"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "L’indemnité forfaitaire pour la connexion internet s’élève à **20 euros par mois** [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 383,
+        "recherche": 106,
+        "generation": 1703,
+        "total": 2192
+      },
+      "jetons": {
+        "prompt_tokens": 691,
+        "completion_tokens": 157,
+        "total_tokens": 848,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 128,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q04",
+      "question": "Quel est le plafond pour un repas de midi en déplacement ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Note de frais - procedure",
+        "Processus commercial et devis",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.876870863251143,
+      "elements_attendus": [
+        "19"
+      ],
+      "elements_presents": [
+        "19"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le plafond pour un repas de midi en déplacement est de **19 euros** [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 248,
+        "recherche": 128,
+        "generation": 1481,
+        "total": 1858
+      },
+      "jetons": {
+        "prompt_tokens": 692,
+        "completion_tokens": 137,
+        "total_tokens": 829,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 113,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q05",
+      "question": "Avant quelle date faut-il soumettre une note de frais ?",
+      "categorie": "fait simple",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Note de frais - procedure",
+        "Procédure de facturation client",
+        "Politique de teletravail",
+        "Processus commercial et devis"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.914567763481605,
+      "elements_attendus": [
+        "5"
+      ],
+      "elements_presents": [
+        "5"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les notes de frais doivent être soumises avant le 5 du mois suivant la dépense. Une note soumise après cette date est reportée sur le cycle de remboursement du mois d'après. [Document 1]",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 216,
+        "recherche": 104,
+        "generation": 2459,
+        "total": 2780
+      },
+      "jetons": {
+        "prompt_tokens": 569,
+        "completion_tokens": 384,
+        "total_tokens": 953,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 383,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q06",
+      "question": "Quel est le plafond d'hébergement en Île-de-France ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Note de frais - procedure",
+        "Reglement interieur - vie quotidienne",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.89760478415532,
+      "elements_attendus": [
+        "130"
+      ],
+      "elements_presents": [
+        "130"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le plafond d'hébergement en Île-de-France est de **130 euros par nuit** [Document 1][Document 2].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 248,
+        "recherche": 59,
+        "generation": 5503,
+        "total": 5810
+      },
+      "jetons": {
+        "prompt_tokens": 733,
+        "completion_tokens": 160,
+        "total_tokens": 893,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 118,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q07",
+      "question": "Combien de jours de congés payés par an ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Processus commercial et devis"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.917565882205963,
+      "elements_attendus": [
+        "25"
+      ],
+      "elements_presents": [
+        "25"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Chaque collaborateur acquiert 25 jours ouvrés de congés payés par an [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 389,
+        "recherche": 101,
+        "generation": 3697,
+        "total": 4188
+      },
+      "jetons": {
+        "prompt_tokens": 786,
+        "completion_tokens": 129,
+        "total_tokens": 915,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 94,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q08",
+      "question": "Combien de jours d'absence pour un mariage ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Reglement interieur - vie quotidienne",
+        "Processus commercial et devis"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.871647969287882,
+      "elements_attendus": [
+        "4"
+      ],
+      "elements_presents": [
+        "4"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le mariage ouvre droit à **4 jours** d’absence [Document 1] [Document 4].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 198,
+        "recherche": 63,
+        "generation": 1560,
+        "total": 1821
+      },
+      "jetons": {
+        "prompt_tokens": 666,
+        "completion_tokens": 137,
+        "total_tokens": 803,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 113,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q09",
+      "question": "Avant quelle date faut-il poser ses congés d'été ?",
+      "categorie": "fait simple",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Reglement interieur - vie quotidienne",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.869583990263462,
+      "elements_attendus": [
+        "31 mars"
+      ],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les congés d’été doivent être posés **avant le 31 mars** [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 203,
+        "recherche": 106,
+        "generation": 1226,
+        "total": 1535
+      },
+      "jetons": {
+        "prompt_tokens": 664,
+        "completion_tokens": 149,
+        "total_tokens": 813,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 126,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q10",
+      "question": "Quelle est la longueur minimale d'un mot de passe ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Charte securite informatique",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Conges et absences",
+        "Glossaire",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.89038690597972,
+      "elements_attendus": [
+        "12"
+      ],
+      "elements_presents": [
+        "12"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "La longueur minimale d'un mot de passe chez NexaWorks est de **12 caractères** [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 198,
+        "recherche": 97,
+        "generation": 932,
+        "total": 1228
+      },
+      "jetons": {
+        "prompt_tokens": 697,
+        "completion_tokens": 106,
+        "total_tokens": 803,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 81,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q11",
+      "question": "Que faire si je reçois un e-mail suspect ?",
+      "categorie": "procédure",
+      "document_attendu": "Charte securite informatique",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Glossaire",
+        "Procédure de facturation client"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.868793078136858,
+      "elements_attendus": [
+        "signaler"
+      ],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Si vous recevez un e‑mail suspect,",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 313,
+        "recherche": 51,
+        "generation": 3383,
+        "total": 3747
+      },
+      "jetons": {
+        "prompt_tokens": 607,
+        "completion_tokens": 400,
+        "total_tokens": 1007,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 449,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q12",
+      "question": "Combien de temps les données clients sont-elles conservées ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Charte securite informatique",
+      "documents_trouves": [
+        "Charte securite informatique",
+        "Procédure de facturation client",
+        "Reglement interieur - vie quotidienne",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.901458686503252,
+      "elements_attendus": [
+        "3 ans"
+      ],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les données clients sont conservées **3 ans après la fin de la relation commerciale**, puis supprimées automatiquement [Document 1][Document 3].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 302,
+        "recherche": 51,
+        "generation": 2541,
+        "total": 2894
+      },
+      "jetons": {
+        "prompt_tokens": 558,
+        "completion_tokens": 157,
+        "total_tokens": 715,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 143,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q13",
+      "question": "Qui valide un devis de 30 000 euros ?",
+      "categorie": "raisonnement sur seuil",
+      "document_attendu": "Processus commercial et devis",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Compte rendu — Client Atlas, Q2",
+        "Procédure de facturation client"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.922618503726633,
+      "elements_attendus": [
+        "directeur commercial"
+      ],
+      "elements_presents": [
+        "directeur commercial"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Un devis de 30 000 € se situe dans la tranche « entre 15 000 et 50 000 euros », pour laquelle la validation relève du **directeur commercial** [Document 1] [Document 2].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 1593,
+        "recherche": 56,
+        "generation": 1841,
+        "total": 3490
+      },
+      "jetons": {
+        "prompt_tokens": 560,
+        "completion_tokens": 277,
+        "total_tokens": 837,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 194,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q14",
+      "question": "Quelle est la durée de validité d'un devis ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Processus commercial et devis",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Compte rendu — Client Atlas, Q2",
+        "Note de frais - procedure",
+        "Procédure de facturation client"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.902333724776957,
+      "elements_attendus": [
+        "30 jours"
+      ],
+      "elements_presents": [
+        "30 jours"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "La durée de validité d’un devis est de **30 jours** à compter de sa date d’émission. [Document 1]",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 203,
+        "recherche": 51,
+        "generation": 1435,
+        "total": 1689
+      },
+      "jetons": {
+        "prompt_tokens": 519,
+        "completion_tokens": 117,
+        "total_tokens": 636,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 80,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q15",
+      "question": "Quelle remise commerciale maximale sans justification ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Processus commercial et devis",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.889300107955933,
+      "elements_attendus": [
+        "10"
+      ],
+      "elements_presents": [
+        "10"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "La remise commerciale standard ne peut pas dépasser **10 %** sans justification écrite ; au‑delà, il faut fournir une justification (volume pluriannuel, référence stratégique, renouvellement anticipé, etc.) [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 389,
+        "recherche": 54,
+        "generation": 1719,
+        "total": 2162
+      },
+      "jetons": {
+        "prompt_tokens": 774,
+        "completion_tokens": 172,
+        "total_tokens": 946,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 138,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q16",
+      "question": "Combien de temps dure une réunion par défaut ?",
+      "categorie": "fait chiffré",
+      "document_attendu": "Reglement interieur - vie quotidienne",
+      "documents_trouves": [
+        "Reglement interieur - vie quotidienne",
+        "Processus commercial et devis",
+        "FAQ onboarding nouveaux arrivants"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.912528276443481,
+      "elements_attendus": [
+        "25",
+        "50"
+      ],
+      "elements_presents": [
+        "25",
+        "50"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les réunions durent par défaut **25 minutes** ou **50 minutes** (jamais 30 ou 60 minutes) afin de laisser un intervalle de transition entre les créneaux [Document 1][Document 3].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 203,
+        "recherche": 51,
+        "generation": 2308,
+        "total": 2561
+      },
+      "jetons": {
+        "prompt_tokens": 539,
+        "completion_tokens": 212,
+        "total_tokens": 751,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 141,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q17",
+      "question": "Quand le réfrigérateur est-il vidé ?",
+      "categorie": "fait simple",
+      "document_attendu": "Reglement interieur - vie quotidienne",
+      "documents_trouves": [
+        "Reglement interieur - vie quotidienne",
+        "Processus commercial et devis",
+        "Charte securite informatique",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.862840958664362,
+      "elements_attendus": [
+        "vendredi"
+      ],
+      "elements_presents": [
+        "vendredi"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le réfrigérateur est vidé tous les vendredis à 18 h, sans exception. [Document 1]",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 212,
+        "recherche": 51,
+        "generation": 1048,
+        "total": 1311
+      },
+      "jetons": {
+        "prompt_tokens": 712,
+        "completion_tokens": 130,
+        "total_tokens": 842,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 106,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q18",
+      "question": "Quelle est la procédure de facturation client ?",
+      "categorie": "procédure",
+      "document_attendu": "Procédure de facturation client",
+      "documents_trouves": [
+        "Procédure de facturation client",
+        "Note de frais - procedure",
+        "Charte securite informatique"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.91970761892566,
+      "elements_attendus": [
+        "devis",
+        "48"
+      ],
+      "elements_presents": [
+        "devis",
+        "48"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Okay, let's see. The user is asking for the procedure for client billing. I need to check the provided documents to find the relevant information.\n\nFirst, I'll look through each document to see which ones mention client billing procedures.\n\nStarting with Document 1: It says, \"Pour facturer un client : ouvrir le dossier projet, vérifier le devis signé.\" So that's part of the procedure—open the project file and check the signed quote.\n\nDocument 2: \"Générer la facture dans l'outil comptable puis l'envoyer au client sous 48h.\" So generate the invoice in the accounting tool and send it to the client within 48 hours.\n\nDocument 3 and 5 are about expense procedures, not client billing. Document 4 is about IT security. So the relevant docs for client billing are 1 and 2.\n\nWait, the user is asking specifically for the procedure of client billing. So combining Document 1 and Document 2: open project file, check signed quote, generate invoice in accounting tool, send to client within 48h.\n\nLet me make sure there's no other info. Documents 3 and 5 talk about expenses for clients being refacturable, but that's about expenses, not the billing procedure itself. The question is about the procedure to bill a client, so the steps in 1 and 2 are the ones to follow.\n\nSo the answer should combine those two: open project file, verify signed quote, generate invoice in accounting tool, send within 48h.\n\nCheck if the documents mention anything else. Document 1 says \"ouvrir le dossier projet, vérifier le devis signé.\" Document 2 says \"Générer la facture dans l'outil comptable puis l'envoyer au client sous 48h.\" So yes, those are the two steps.\n\nI need to cite the sources. So Document 1 and Document 2.\n\nLet me confirm",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 309,
+        "recherche": 54,
+        "generation": 2829,
+        "total": 3192
+      },
+      "jetons": {
+        "prompt_tokens": 486,
+        "completion_tokens": 400,
+        "total_tokens": 886,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 438,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q19",
+      "question": "Où trouver le modèle de compte rendu ?",
+      "categorie": "fait simple",
+      "document_attendu": "FAQ onboarding nouveaux arrivants",
+      "documents_trouves": [
+        "FAQ onboarding nouveaux arrivants",
+        "Processus commercial et devis",
+        "Note de frais - procedure",
+        "Glossaire",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.942160185704244,
+      "elements_attendus": [
+        "Templates"
+      ],
+      "elements_presents": [
+        "Templates"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Le modèle de compte rendu se trouve dans le dossier **Templates > CR_reunion** [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 214,
+        "recherche": 89,
+        "generation": 813,
+        "total": 1116
+      },
+      "jetons": {
+        "prompt_tokens": 644,
+        "completion_tokens": 76,
+        "total_tokens": 720,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 51,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q20",
+      "question": "Quelles décisions ont été prises lors de la réunion Atlas ?",
+      "categorie": "synthèse",
+      "document_attendu": "Compte rendu — Client Atlas, Q2",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Reglement interieur - vie quotidienne",
+        "FAQ onboarding nouveaux arrivants",
+        "Compte rendu — Client Atlas, Q2"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 5,
+      "meilleure_similarite": 0.879033029079437,
+      "elements_attendus": [
+        "report",
+        "budget"
+      ],
+      "elements_presents": [
+        "report",
+        "budget"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Lors de la réunion avec le client Atlas, les décisions prises ont été :\n\n- le report du livrable de deux semaines  \n- la validation d’un budget additionnel  \n\n[Document 5]",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 833,
+        "recherche": 51,
+        "generation": 1396,
+        "total": 2280
+      },
+      "jetons": {
+        "prompt_tokens": 485,
+        "completion_tokens": 150,
+        "total_tokens": 635,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 114,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q21",
+      "question": "Un alternant peut-il télétravailler trois jours dès son arrivée ?",
+      "categorie": "raisonnement sur exception",
+      "document_attendu": "Politique de teletravail",
+      "documents_trouves": [
+        "Politique de teletravail",
+        "Charte securite informatique",
+        "Conges et absences"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.892429232597357,
+      "elements_attendus": [
+        "un jour",
+        "trois mois"
+      ],
+      "elements_presents": [
+        "un jour"
+      ],
+      "complet": false,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Non. Selon la politique de télétravail, les alternants (ainsi que les collaborateurs en période d’essai) sont limités à **un jour de télétravail par semaine pendant les trois premiers mois** afin de faciliter leur intégration ; ils ne peuvent donc pas télétravailler trois jours dès leur arrivée [Document 1].",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 304,
+        "recherche": 57,
+        "generation": 3537,
+        "total": 3897
+      },
+      "jetons": {
+        "prompt_tokens": 730,
+        "completion_tokens": 298,
+        "total_tokens": 1028,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 250,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q22",
+      "question": "Puis-je me faire rembourser une amende de stationnement ?",
+      "categorie": "raisonnement négatif",
+      "document_attendu": "Note de frais - procedure",
+      "documents_trouves": [
+        "Processus commercial et devis",
+        "Charte securite informatique",
+        "Compte rendu — Client Atlas, Q2"
+      ],
+      "bon_document_trouve": false,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.873404733741567,
+      "elements_attendus": [
+        "jamais",
+        "amende"
+      ],
+      "elements_presents": [
+        "amende"
+      ],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "Je ne trouve aucune information concernant le remboursement d’une amende de stationnement dans les documents fournis. Aucun des textes ne mentionne ce sujet.",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 180,
+        "recherche": 48,
+        "generation": 1771,
+        "total": 1999
+      },
+      "jetons": {
+        "prompt_tokens": 502,
+        "completion_tokens": 147,
+        "total_tokens": 649,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 144,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q23",
+      "question": "Combien de jours de RTT sont reportables ?",
+      "categorie": "raisonnement négatif",
+      "document_attendu": "Conges et absences",
+      "documents_trouves": [
+        "Conges et absences",
+        "Charte securite informatique",
+        "Compte rendu — Client Atlas, Q2",
+        "Glossaire"
+      ],
+      "bon_document_trouve": true,
+      "rang_du_bon_document": 1,
+      "meilleure_similarite": 0.896039048191404,
+      "elements_attendus": [
+        "pas reportables"
+      ],
+      "elements_presents": [
+        "pas reportables"
+      ],
+      "complet": true,
+      "refus_explicite": false,
+      "hallucination": false,
+      "reponse": "Les RTT ne sont pas reportables et doivent être soldés au 31 décembre. [Document 1]  \nAucun jour de RTT n'est donc reportable.  \n**Réponse : 0 jour**",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 324,
+        "recherche": 52,
+        "generation": 2101,
+        "total": 2477
+      },
+      "jetons": {
+        "prompt_tokens": 622,
+        "completion_tokens": 374,
+        "total_tokens": 996,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 330,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q24",
+      "question": "Quelle est la politique de remboursement des frais de crèche ?",
+      "categorie": "hors-corpus",
+      "document_attendu": null,
+      "documents_trouves": [
+        "Conges et absences",
+        "Processus commercial et devis",
+        "Politique de teletravail",
+        "FAQ onboarding nouveaux arrivants",
+        "Reglement interieur - vie quotidienne"
+      ],
+      "bon_document_trouve": null,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.845667396614946,
+      "elements_attendus": [],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "La politique de remboursement des frais de crèche n'est pas mentionnée dans les documents fournis. Aucun des cinq documents ne traite de ce sujet spécifique. [Aucun document]",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 295,
+        "recherche": 58,
+        "generation": 2215,
+        "total": 2568
+      },
+      "jetons": {
+        "prompt_tokens": 574,
+        "completion_tokens": 298,
+        "total_tokens": 872,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 324,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q25",
+      "question": "Quel est le montant de la prime de fin d'année ?",
+      "categorie": "hors-corpus",
+      "document_attendu": null,
+      "documents_trouves": [
+        "Glossaire",
+        "Processus commercial et devis",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": null,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.840533921686787,
+      "elements_attendus": [],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "La prime de fin d'année n'est pas mentionnée dans aucun des documents fournis. Les documents abordent les processus commerciaux (validité des devis, seuils de validation, remises), le glossaire fonctionnel (vues Kanban, tests utilisateurs) et la politique de télétravail (plages de réponse), mais aucune information concernant une prime de fin d'année n'y figure. [Aucun document ne contient cette information]",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 558,
+        "recherche": 63,
+        "generation": 2510,
+        "total": 3132
+      },
+      "jetons": {
+        "prompt_tokens": 680,
+        "completion_tokens": 369,
+        "total_tokens": 1049,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 309,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    {
+      "id": "Q26",
+      "question": "Quelle est la capitale de l'Australie ?",
+      "categorie": "hors-domaine",
+      "document_attendu": null,
+      "documents_trouves": [
+        "Procédure de facturation client",
+        "Glossaire",
+        "Processus commercial et devis",
+        "Politique de teletravail"
+      ],
+      "bon_document_trouve": null,
+      "rang_du_bon_document": null,
+      "meilleure_similarite": 0.8166015063587,
+      "elements_attendus": [],
+      "elements_presents": [],
+      "complet": false,
+      "refus_explicite": true,
+      "hallucination": false,
+      "reponse": "Je ne trouve pas cette information dans les documents fournis.",
+      "erreur": null,
+      "latences_ms": {
+        "embedding": 173,
+        "recherche": 47,
+        "generation": 1227,
+        "total": 1447
+      },
+      "jetons": {
+        "prompt_tokens": 648,
+        "completion_tokens": 77,
+        "total_tokens": 725,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 77,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "modele_utilise": "nvidia/nemotron-3-super-120b-a12b:free"
+    }
+  ]
+}
