@@ -111,6 +111,21 @@ Fichier attendu : `docs/REGISTRE_DONNEES_RAG.md`
 
 ---
 
+## Skills BMAD — où ils servent, et où ils ne servent pas
+
+Si l'environnement dispose du framework BMAD, quatre livrables y gagnent. Les autres n'ont pas d'équivalent : ce sont des documents de conformité et d'exploitation, hors de son périmètre. **Ne pas forcer un skill là où il ne correspond pas** — une trame inadaptée produit un document générique là où le référentiel attend du spécifique.
+
+| Livrable | Skill à invoquer | Apport |
+|---|---|---|
+| 2.3 Guide UX design | `bmad-ux` | Correspondance directe : structure et vocabulaire d'une spécification UX |
+| 2.4 Spécification API | `bmad-architecture` ou `bmad-spec` | Cadre de description des composants et de leurs contrats |
+| 2.2 Workflows et cas d'usage | `bmad-document-project` | Méthode de documentation d'un projet existant |
+| **Les neuf, en relecture finale** | `bmad-editorial-review-prose` puis `bmad-editorial-review-structure` | Passe de qualité : clarté de la prose, puis cohérence de structure |
+
+Aucun skill BMAD ne couvre les livrables 4.1, 4.2, 4.6, 4.8, 4.9 et 7.3. Les rédiger directement, en s'appuyant sur la matière factuelle donnée plus haut.
+
+Pour toute la rédaction, la posture `bmad-agent-tech-writer` est pertinente : documentation technique destinée à un lecteur professionnel, précision avant exhaustivité.
+
 ## Ordre suggéré
 
 Commencer par **2.4** (spécification API) et **4.2** (matrice IAM) : la matière est entièrement disponible dans le code, ce sont les plus rapides et les plus factuels. Poursuivre par **7.3** et **4.9**, puis **4.1**, **4.6**, **4.8**. Terminer par **2.2** et **2.3**, qui demandent le plus d'interprétation.
